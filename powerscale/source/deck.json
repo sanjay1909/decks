@@ -1,0 +1,12 @@
+{
+  "title": "PowerScale, explained",
+  "description": "A request, a measurement, an evidence trail: one file request into PowerScale, the statistics it keeps, the collector beside the path, and the evidence behind every finding. Illustrative examples, no live systems.",
+  "footer": "PowerScale, explained · illustration, no live systems",
+  "area": [
+    0,
+    220,
+    1920,
+    1000
+  ],
+  "post": "post.json"
+}

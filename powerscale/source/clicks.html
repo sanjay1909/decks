@@ -1,0 +1,431 @@
+<!--
+  The deck, click by click. Read by build.mjs.
+
+  <section data-label="…" data-kicker="…">  one part of the story (a post.json section's slides are its clicks).
+    A section with data-map="map" is drawn on deck/map.html (data-map="data": deck/data.html); every <step> inside it is ONE click:
+      data-in   pieces that come in (they stay)       data-out  pieces that leave
+      data-on   the pieces this click is about (everything else shown is greyed: StoryDeck's default `grey`)
+      data-focus  StoryDeck strategies: "path" (lit piece after piece along data-focus-route), "zoom", …
+    <h2> is the click's headline (keep headline + new canvas words to about 12).
+    <aside class="notes"> is what the presenter says: shown with N, in the presenter window (P) and read by L.
+  A section without data-map is a plain slide.
+  Canvas rule: illustrative numbers carry the "illustration" tag; references live in notes and body.md only.
+-->
+
+<section data-label="Title" data-kicker="PowerScale, explained" data-theme="cover">
+  <div class="cv-hero">
+    <h1>A request, a measurement, an evidence trail</h1>
+    <p class="sub">Illustration · no live systems</p>
+  </div>
+  <div class="agenda">
+    <div class="tile world" data-theme="blueprint"><span class="no">Part one</span><b>The request</b><svg viewBox="0 0 360 90" aria-hidden="true"><path d="M0 45 H360"/><rect x="18" y="22" width="86" height="46"/><rect x="256" y="22" width="86" height="46"/></svg><small>sections 1–8</small></div>
+    <div class="tile world" data-theme="transit"><span class="no">Part two</span><b>Who does what</b><svg viewBox="0 0 360 90" aria-hidden="true"><line class="line" x1="16" y1="45" x2="344" y2="45"/><circle cx="30" cy="45" r="16" style="stroke:var(--col)"/><circle cx="130" cy="45" r="16" style="stroke:var(--ev)"/><circle cx="230" cy="45" r="16" style="stroke:var(--col)"/><circle cx="330" cy="45" r="16" style="stroke:var(--agt)"/></svg><small>sections 9–12</small></div>
+    <div class="tile world" data-theme="ledger"><span class="no">Part three</span><b>What we keep</b><span class="mini-stamp">kept</span><small>sections 13–14</small></div>
+    <div class="tile world" data-theme="scope"><span class="no">Part four</span><b>What it costs</b><svg viewBox="0 0 360 90" aria-hidden="true"><path d="M0 74 H30 V12 H33 V74 H120 V12 H123 V74 H210 V12 H213 V74 H300 V12 H303 V74 H360"/></svg><small>sections 15–17</small></div>
+  </div>
+  <aside class="notes">This walk-through has four parts, each drawn in its own way. Part one follows one file request into PowerScale and the evidence each poll leaves. Part two shows who does what in the native client poll. Part three is what we keep and how it stays small. Part four is what it costs and how it grows. Every example is illustrative: no live system was queried, and nothing here changes a collection setting.</aside>
+</section>
+
+<section data-label="Part one" data-kicker="Part one" data-theme="blueprint">
+  <div class="cv-title"><h1>The request</h1><p>One file request, a measurement, an evidence trail</p></div>
+  <svg class="cv-route" viewBox="0 0 1760 210" aria-hidden="true">
+    <path class="ln" d="M14 95 H1746"/><path class="hd" d="M0 95 L24 84 L24 106 Z M1760 95 L1736 84 L1736 106 Z"/>
+    <path class="dim" d="M40 182 H1720 M40 168 V196 M1720 168 V196"/>
+    <rect x="40" y="40" width="300" height="110"/><text x="190" y="106">Application</text>
+    <rect x="500" y="40" width="300" height="110"/><text x="650" y="106">File client</text>
+    <rect x="960" y="40" width="300" height="110"/><text x="1110" y="106">Network</text>
+    <rect class="ps" x="1420" y="40" width="300" height="110"/><text x="1570" y="106">PowerScale</text>
+  </svg>
+  <div class="cv-block">
+    <span>Project</span><span>PowerScale, explained</span>
+    <span>Drawing</span><span>Part 1 of 4</span>
+    <span>Scale</span><span>not to scale, illustration</span>
+    <span>Drawn</span><span>21 Oct 2026</span>
+    <span>Checked</span><span>storydeck check</span>
+  </div>
+  <aside class="notes">Part one follows one file request into PowerScale: the path it travels, what PowerScale measures as it serves it, the collector that reads those measurements beside the path, and the evidence each poll leaves. It is drawn as an engineering sheet, because it is the drawing of the system.</aside>
+</section>
+
+<section data-label="1 · The file path" data-kicker="1 · The file path" data-map="map" data-theme="blueprint">
+  <step data-in="app" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>A scan application needs file data</h2>
+    <aside class="notes">A user opens a scan. The application runs on a server or a VM and needs file data that is stored on PowerScale. This starts the example; no collector is involved yet.</aside>
+  </step>
+  <step data-in="req1 os req2 net req3 ps" data-on="app req1 os req2 net req3 ps" data-focus="zoom path" data-focus-share="0.95">
+    <h2>The request travels to PowerScale</h2>
+    <aside class="notes">The application asks its operating system for the bytes. The VM's file client sends an SMB or NFS request. The network carries requests and file bytes between systems. PowerScale's operating system, OneFS, serves the shared file using its storage nodes.</aside>
+    <aside class="notes">A write follows the same route: "store these bytes at this position". One user click can cause many file operations.</aside>
+  </step>
+  <step data-in="ret3 ret2 ret1" data-on="ps ret3 ret2 ret1 app" data-focus="zoom path" data-focus-share="0.95">
+    <h2>The reply travels back</h2>
+    <aside class="notes">The file data comes back the same way: PowerScale, the network, the VM, the application. Everything the user waits for is on this route, and only part of it is inside the storage system.</aside>
+  </step>
+</section>
+
+<section data-label="2 · Inside PowerScale" data-kicker="2 · Inside PowerScale" data-map="map" data-theme="blueprint">
+  <step data-in="recv s1 proc s2 serve s3 resp" data-on="ps recv s1 proc s2 serve s3 resp" data-focus="zoom path" data-focus-route="recv s1 proc s2 serve s3 resp">
+    <h2>Receive, process, serve, respond</h2>
+    <aside class="notes">PowerScale is the shared storage product; OneFS is its operating system, and several storage nodes work together. A node receives a file operation through SMB or NFS. It checks access and locates the file data or metadata. It serves the read from cache or storage, or processes the write. Then it sends data, an acknowledgement or an error back to the client.</aside>
+    <aside class="notes">This is a simplified flow, not an exact execution trace for every operation. Reference: Dell OneFS technical overview (see the Read lens).</aside>
+  </step>
+  <step data-in="boundary" data-on="ps recv s1 proc s2 serve s3 resp boundary" data-focus="zoom">
+    <h2>Where storage latency is measured</h2>
+    <aside class="notes">Storage latency has a measurement boundary: it describes the work covered by that storage metric. The user also waits for the application and the rest of the path, so a delay inside this box is only one part of the user's wait.</aside>
+  </step>
+</section>
+
+<section data-label="3 · Statistics already exist" data-kicker="3 · Statistics already exist" data-map="map" data-theme="blueprint">
+  <step data-out="boundary" data-in="c-act c-lat c-who" data-on="ps c-act c-lat c-who" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>PowerScale already keeps statistics</h2>
+    <aside class="notes">While serving file operations, the system maintains counters and performance measurements, and an API exposes them grouped. Activity: operation counts, rates and bytes transferred, where the endpoint supplies them. Latency: time spent processing the operations the metric covers. Who and where: client address, protocol, operation class and storage node, where reported.</aside>
+  </step>
+  <step data-in="math" data-on="c-lat math" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>A small example</h2>
+    <aside class="notes">Illustration only. Imagine ten measured reads whose durations add up to 120 milliseconds. Their average is 12 milliseconds per operation.</aside>
+  </step>
+  <step data-in="avg" data-on="c-lat math avg" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>Read an average with care</h2>
+    <aside class="notes">That does not mean every read took 12 milliseconds, or that the user saw the scan in 12 milliseconds. A returned average alone cannot recover each request, its maximum or its percentiles. Keep the units, the operation group and the measurement interval with the number.</aside>
+  </step>
+</section>
+
+<section data-label="4 · The collector, beside the path" data-kicker="4 · The collector, beside the path" data-map="map" data-theme="blueprint">
+  <step data-out="avg" data-in="collector api apiback" data-on="collector api ps c-act c-lat c-who apiback" data-focus="zoom path" data-focus-route="collector api c-lat apiback" data-focus-share="0.9">
+    <h2>A separate request asks for statistics</h2>
+    <aside class="notes">Our collector makes a management API request on its own schedule. It is a second, separate request, outside the application's file-data path.</aside>
+    <aside class="notes">Two meanings of "request": the application's file request opens or changes a file; the collector's API request reads management information about activity.</aside>
+  </step>
+  <step data-in="nobytes" data-on="app req1 os req2 net req3 ps collector api apiback nobytes" data-focus="zoom" data-focus-share="0.9">
+    <h2>Two requests, two paths</h2>
+    <aside class="notes">The user's file request goes to PowerScale. Separately, the collector asks the management API for statistics. The file bytes never pass through the collector, and real reads and writes carry on between collection runs.</aside>
+  </step>
+</section>
+
+<section data-label="5 · Collection → InfluxDB" data-kicker="5 · Collection → InfluxDB" data-map="map" data-theme="blueprint">
+  <step data-out="nobytes" data-in="influx store" data-on="collector store influx" data-focus-route="collector store influx" data-focus="zoom path" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>Each poll's rows land in InfluxDB</h2>
+    <aside class="notes">A timer starts a poll; it is not triggered by each application request. The collector asks PowerScale for selected statistics, receives rows and metadata, and records success, partial results, a timeout or an error. The existing Python collection writes the measurements to InfluxDB.</aside>
+  </step>
+  <step data-in="sched" data-on="collector sched" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>It polls on a schedule</h2>
+    <aside class="notes">Reported operator settings, still to be confirmed against the deployment; they are not PowerScale defaults. Client performance every 5 seconds, to notice short changes. A full performance pass every 5 minutes: system, drives, protocols, nodes, heat, network, jobs and sessions. Configuration every 6 hours at minute 05, protection every hour at minute 35, events every hour at minute 20.</aside>
+    <aside class="notes">Collection time is when we asked; an event's own timestamp is when it reportedly happened. An inventory snapshot shows what was seen then, not that it stayed true for six hours.</aside>
+  </step>
+  <step data-in="rowcard" data-on="influx rowcard" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>What one row means</h2>
+    <aside class="notes">A row usually describes a population of operations, not one named application request. Top-N selection keeps only the selected clients. A poll time alone does not establish the metric's time window.</aside>
+  </step>
+  <step data-in="notrace" data-on="rowcard sched notrace" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>One click, many operations</h2>
+    <aside class="notes">A poll is not a trace of this request. One click can cause many file operations; our rows describe groups of operations and keep only selected clients, so we cannot assign the user's total wait to one read from those averages.</aside>
+  </step>
+  <step data-out="notrace" data-in="units" data-on="influx units" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>Units travel with the number</h2>
+    <aside class="notes">The Python collection stores these latency fields in microseconds: 1,000 microseconds is one millisecond. Every number keeps its unit, its operation group and its interval.</aside>
+  </step>
+</section>
+
+<section data-label="6 · Zoom into the data" data-kicker="6 · Zoom into the data" data-map="map" data-theme="blueprint">
+  <step data-on="collector store influx" data-focus="zoom" data-focus-share="0.9" data-focus-most="2.4">
+    <h2>Zoom into the data</h2>
+    <aside class="notes">Now we close in on the collector and follow one poll's data from the device's response to a finding. One small synthetic example, an illustration: the addresses come from the documentation range, and the fingerprint is made up.</aside>
+  </step>
+</section>
+
+<section data-label="6 · Zoom into the data (detail)" data-kicker="6 · Zoom into the data" data-map="data" data-theme="blueprint">
+  <step data-in="rsp r0 r1 r2" data-focus="zoom path" data-focus-route="rsp r0 r1 r2" data-focus-share="0.85" data-focus-most="1.8">
+    <h2>The raw API response</h2>
+    <aside class="notes">The management API answers a poll with rows of client statistics. Each row has an address, a protocol, an operation class, a storage node, an operation count and an average time in microseconds. Three rows here, illustration only.</aside>
+  </step>
+  <step data-in="sel0 sel1 sel2" data-on="rsp r0 sel0 r2 sel2" data-quiet data-focus="zoom path" data-focus-route="r0 sel0 r2 sel2" data-focus-share="0.85" data-focus-most="1.8">
+    <h2>Top-N keeps rows, each with a reason</h2>
+    <aside class="notes">Top-N selection keeps a few clients per poll and records why each was kept: a high rate, many bytes, a peak, or a typical row kept for comparison. The busy first row is kept for its rate, the slow third row for its peak. The second row is not selected: it stays in the response, but no saved row will carry it.</aside>
+  </step>
+  <step data-in="ptr stamp carry" data-on="r2 sel2 ptr stamp carry" data-hot="ptr" data-focus="path" data-focus-route="r2 ptr">
+    <h2>Each kept row gets an address</h2>
+    <aside class="notes">A kept row is addressed by a pointer into the response it came from, /client/2 (the third element, counting from zero), together with the SHA-256 fingerprint of that exact response. Pointer plus fingerprint name one row of one response, so it can be found again.</aside>
+  </step>
+  <step data-on="carry" data-focus="apart" data-focus-apart="carry: 990 -218">
+    <h2>The row lifts out…</h2>
+    <aside class="notes">The selected row leaves the response...</aside>
+  </step>
+  <step data-out="carry" data-in="pt-meas pt-tags pt-fields" data-on="pt-meas pt-tags pt-fields" data-focus="zoom path" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>…and becomes a typed point</h2>
+    <aside class="notes">...and is written as one InfluxDB point in line protocol: a measurement name, tags that say who and where (address, protocol, operation, node), and fields that hold the values.</aside>
+  </step>
+  <step data-in="legend units" data-on="pt-fields legend units" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>Every field keeps its type and unit</h2>
+    <aside class="notes">Field types are explicit: a float has a decimal point, an integer ends in i, a string is quoted, a boolean is true or false. A field written once as an integer and later as a float would be refused, so the writer fixes each type. Times stay in microseconds: 48,200 microseconds is 48.2 milliseconds.</aside>
+  </step>
+  <step data-in="rcpt" data-on="rcpt stamp" data-focus="place" data-focus-groups="stamp: 704 94 1">
+    <h2>One receipt per poll</h2>
+    <aside class="notes">Every poll gets a run receipt: when it started and ended, its status (ok, partial or timeout), how many rows it saw, kept and dropped, and the fingerprint of the response. The fingerprint is the same one the row's address carries, so the row and the receipt point at the same response.</aside>
+  </step>
+  <step data-out="stamp" data-in="win gaps gapcall summary" data-on="win gaps gapcall summary" data-focus="zoom path" data-focus-route="win gaps gapcall summary" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>Sixty polls, two gaps</h2>
+    <aside class="notes">At one poll every five seconds, a five-minute window holds sixty polls. Two came back without data here: one timed out, one is missing. Missing means unknown, not zero: the gaps stay gaps, and the window summary says so, mean and peak over 58 of 60 polls, never a zero folded into the mean. Illustration values.</aside>
+  </step>
+  <step data-out="gapcall" data-in="finding l1 l2 l3 l4" data-on="finding l1 summary l2 win l3 rcpt l4 sel2 r2 rsp" data-focus="path" data-focus-route="finding l1 summary l2 win l3 rcpt l4 sel2 r2 rsp">
+    <h2>A finding opens its trail backwards</h2>
+    <aside class="notes">A finding, "client latency high", opens its trail backwards, one step at a time: the statistic it was judged on, the window that statistic summarises, the receipt of the poll, the selected row with its reason, and the raw response it came from.</aside>
+  </step>
+  <step data-out="rsp r0 r1 r2 sel0 sel1 sel2 ptr pt-meas pt-tags pt-fields legend units rcpt win gaps summary finding l1 l2 l3 l4" data-in="lane-a dev-a aa1 py-a aa2 db-a flag-a" data-on="lane-a db-a flag-a" data-quiet data-focus="zoom path" data-focus-route="db-a flag-a" data-focus-share="0.9" data-focus-most="1.4">
+    <h2>Python path: the trail starts at the database</h2>
+    <aside class="notes">Two evidence paths. The existing Python collection writes rows to InfluxDB and does not keep the device response, so a finding read from the database can be traced back only as far as the saved query result.</aside>
+  </step>
+  <step data-in="lane-b dev-b ab1 node-b ab2 db-b flag-b" data-on="lane-b db-b ab2 node-b ab1 dev-b flag-b" data-focus="zoom path" data-focus-share="0.9" data-focus-most="1.4">
+    <h2>Native path: it starts at the device</h2>
+    <aside class="notes">The native Node collector keeps the captured response, its fingerprint and a receipt beside the rows it writes, so the trail runs all the way back to the device response. Those Node paths are built for clients, drives and system statistics, and are not yet switched on.</aside>
+  </step>
+</section>
+
+<section data-label="7 · Evidence" data-kicker="7 · Evidence" data-map="map" data-theme="blueprint">
+  <step data-in="receipt" data-on="collector store receipt influx" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>Every poll leaves a receipt</h2>
+    <aside class="notes">Back in the big picture: every poll leaves a receipt beside its rows. Python's additive evidence and raw-response archiving are separate options, off by default; nothing in this walk-through turns them on.</aside>
+  </step>
+  <step data-in="ledger t-find tr3 t-stat tr2 t-rows tr1 t-resp" data-on="ledger t-find tr3 t-stat tr2 t-rows tr1 t-resp" data-focus="zoom path" data-focus-route="t-find tr3 t-stat tr2 t-rows tr1 t-resp ledger" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>Footprint keeps the trail</h2>
+    <aside class="notes">Footprint records how a captured response is selected, converted and used for a finding, so a finding can be followed back to its statistic, its saved rows and the captured response. On the direct-capture path that reaches the saved device response; reading existing InfluxDB data, the trail stops at the saved query result unless the collection-run join and the archived response are available and verified.</aside>
+    <aside class="notes">What it does not prove: a trace of our processing is not a trace of the application's file request, and not proof of physical cause. Our evidence ID identifies the collected observation, not the application's request.</aside>
+  </step>
+</section>
+
+<section data-label="8 · Investigation" data-kicker="8 · Investigation" data-map="map" data-theme="blueprint">
+  <step data-out="math" data-in="q" data-on="q" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>Ask a question</h2>
+    <aside class="notes">An illustrative investigation, not a measurement from a real system. A user says the scan is slow. What do we actually know?</aside>
+  </step>
+  <step data-in="a-known" data-on="q a-known c-lat" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>What is known</h2>
+    <aside class="notes">Illustration: the saved PowerScale response reports this client's average read latency as 12 milliseconds. That fact stands on its own evidence. Whether it is abnormal needs a baseline or a configured rule.</aside>
+  </step>
+  <step data-in="a-unsure a-why" data-on="q a-known a-unsure a-why" data-focus="zoom" data-focus-share="0.85" data-focus-most="1.6">
+    <h2>What is not sure, and why</h2>
+    <aside class="notes">Which VM produced that traffic is unresolved, because the client-to-VM mapping for that time is missing. A timed-out poll is the same kind of gap: the answer names it instead of filling it in. Only the VM claim is blocked; the latency fact remains usable. Saying why it was slow would need more evidence again: a simultaneous job or warning is a clue, not proof of cause.</aside>
+  </step>
+  <step data-in="link" data-on="a-known link t-find tr3 t-stat tr2 t-rows tr1 t-resp" data-focus="zoom path" data-focus-share="0.9">
+    <h2>The trail opens on click</h2>
+    <aside class="notes">Clicking the known fact opens its trail: the finding, the statistic, the saved rows and the captured response it rests on, so anyone can check the answer instead of trusting it.</aside>
+  </step>
+  <step data-on="*">
+    <h2>Part one, end to end</h2>
+    <aside class="notes">One request, one measurement, one evidence trail. The file path serves the user; PowerScale measures its own work; the collector reads those statistics beside the path; and every finding can be followed back to the response it came from.</aside>
+  </step>
+</section>
+
+<section data-label="Part two" data-kicker="Part two" data-theme="transit">
+  <div class="cv-title"><h1>Who does what</h1><p>Three owners, eight stops, one boundary</p></div>
+  <div class="cv-calls">This part calls at</div>
+  <svg class="cv-strip" viewBox="0 0 1760 220" aria-hidden="true"><line class="line" x1="60" y1="70" x2="1700" y2="70"/><circle class="app" cx="100" cy="70" r="30"/><text class="n app" x="100" y="71">1</text><text x="100" y="152">Schedule</text><circle class="lib" cx="322" cy="70" r="30"/><text class="n lib" x="322" y="71">2</text><text x="322" y="152">Collect</text><circle class="app" cx="544" cy="70" r="30"/><text class="n app" x="544" y="71">3</text><text x="544" y="152">Fetch</text><circle class="lib" cx="766" cy="70" r="30"/><text class="n lib" x="766" y="71">4</text><text x="766" y="152">Save raw</text><circle class="app" cx="988" cy="70" r="30"/><text class="n app" x="988" y="71">5</text><text x="988" y="152">Compact</text><circle class="lib" cx="1210" cy="70" r="30"/><text class="n lib" x="1210" y="71">6</text><text x="1210" y="152">Keep</text><circle class="lib" cx="1432" cy="70" r="30"/><text class="n lib" x="1432" y="71">7</text><text x="1432" y="152">Summarize</text><circle class="agt" cx="1654" cy="70" r="30"/><text class="n agt" x="1654" y="71">8</text><text x="1654" y="152">Answer</text></svg>
+  <div class="cv-legend"><span class="app">The app · knows PowerScale</span><span class="lib">Library · footprintjs-datapipeline</span><span class="agt">Agent · agentfootprint</span></div>
+  <aside class="notes">Part two opens the native client poll: the flow once, then each owner's part. Three owners (the app, the library and the agent) and eight stops, each stop in its owner's colour. Drawn as a line map, because it is a route with changes between lines. All of it is built and tested, and none of it is switched on.</aside>
+</section>
+
+<section data-label="9 · How collection works" data-kicker="9 · How collection works" data-map="flow" data-theme="transit">
+  <step data-in="band-app band-lib line dev off n1 n2 n3 n4 n5 n6 n7 n8 w1 w2 w3 w4 w5 w6 w7 dreq dret" data-on="band-app band-lib line dev off n1 n2 n3 n4 n5 n6 n7 n8 w1 w2 w3 w4 w5 w6 w7 dreq dret" data-focus="path" data-focus-route="n1 w1 n2 w2 n3 dreq dev dret w3 n4 w4 n5 w5 n6 w6 n7 w7 n8">
+    <h2>One poll, end to end: eight steps</h2>
+    <aside class="notes">Here is the whole native client poll once, before we open each part. Every five seconds the app schedules a slot (1). The library turns it into one operation (2). The app’s adapter fetches the client statistics from PowerScale (3). The library checks the answer and saves it raw (4). The app’s compact builder reads that saved answer and keeps only the watched values (5). The library keeps both records for a set time, then expires them (6), and every five minutes summarizes sixty slots (7). The app’s agent answers questions from those records (8). All of it is built and tested; none of it is switched on.</aside>
+  </step>
+  <step data-on="band-app band-lib line w1 w2 w3 w4 w5 w7">
+    <h2>Two owners, one boundary</h2>
+    <aside class="notes">The app, above the line, is the PowerScale app: it knows the device. The library, below, is footprintjs-datapipeline: it knows how to record, and nothing about PowerScale. Each time the flow crosses the dashed line, one side calls the other through a named interface, and nothing else passes. The agent (8) is part of the app, drawn in its own colour.</aside>
+  </step>
+  <step data-on="n1 n2 n3 n4 n5 n6 n7 n8">
+    <h2>Now each part in detail: the app, the library, the agent</h2>
+    <aside class="notes">Next we take the parts one owner at a time: the app’s steps (1, 3 and 5), then the library’s (2, 4, 6 and 7), then the agent (8). On every slide the flow stays on the left, with the step we are on lit.</aside>
+  </step>
+</section>
+<section data-label="10 · The app’s part" data-kicker="10 · The app’s part" data-map="steps" data-theme="transit">
+  <step data-in="mline m1 m2 m3 m4 m5 m6 m7 m8 o-app" data-on="m1 m3 m5 o-app" data-quiet data-hot="m1 m3 m5">
+    <h2>The app’s part: it knows PowerScale</h2>
+    <aside class="notes">The app is the PowerScale app. It owns everything that knows the device: when to ask (a poll per source every five seconds), how to ask (one request, five seconds at most), what a row means (the compact builder), and the store rules (two folders, two keep times, one disk floor). It never decides how a record is saved: it hands each slot to the library.</aside>
+  </step>
+  <step data-in="s1-own s1-time s1-call s1-cap" data-out="o-app" data-on="m1 s1-own s1-time s1-call s1-cap" data-hot="m1">
+    <h2>Step 1 · Schedule: one poll per slot</h2>
+    <aside class="notes">A slot is one source at one scheduled instant, such as 10:00:15. The host owns the clock: it calls poll with a run ID and the slot time, once per slot, one poller per source. The sources start a little apart so they do not all ask at once. Three sources here, as an illustration.</aside>
+  </step>
+  <step data-in="s3-own s3-g1 s3-g2 s3-fail" data-out="s1-own s1-time s1-call s1-cap" data-on="m3 s3-own s3-g1 s3-g2 s3-fail" data-hot="m3">
+    <h2>Step 3 · Fetch: two checks before the device</h2>
+    <aside class="notes">Before the device is touched, the app’s adapter makes two checks. If the poll starts five seconds or more after its slot, it is refused as late, so polls never pile up behind a slow one. If free space in either store is below the floor, it is refused as storage-full, with the exact readings saved. Either way the slot gets a failed receipt, no request is sent, and nothing is retried.</aside>
+  </step>
+  <step data-in="s3-dev s3-req s3-ret s3-timer s3-limits s3-late" data-on="m3 s3-own s3-dev s3-req s3-ret s3-timer s3-limits s3-late" data-hot="m3" data-focus="path" data-focus-route="s3-req s3-dev s3-ret">
+    <h2>Step 3 · Fetch: one request, five seconds at most</h2>
+    <aside class="notes">One request to the cluster’s management API for its client statistics: no redirects, at most 2 MiB, strict UTF-8, and one five-second budget for the whole poll. If the time runs out, nothing is saved and the slot shows as not collected: a gap, never a zero.</aside>
+  </step>
+  <step data-in="s5-own s5-raw s5-to s5-rcpt s5-series s5-cap" data-out="s3-own s3-g1 s3-g2 s3-fail s3-dev s3-req s3-ret s3-timer s3-limits s3-late" data-on="m5 s5-own s5-raw s5-to s5-rcpt s5-series s5-cap" data-hot="m5" data-focus="path" data-focus-route="s5-raw s5-to s5-rcpt s5-series">
+    <h2>Step 5 · Compact: values and pointers, from the saved answer</h2>
+    <aside class="notes">Once the library confirms the raw answer is saved, it runs a second collect, and the app’s compact builder does the PowerScale part. It reads the saved answer, never the device, and writes one receipt for the slot (complete, partial, empty or failed) plus a value for each watched client. Each value points back to its row by a JSON pointer such as /client/2 and the answer’s SHA-256 fingerprint. A watched client absent from the answer is missing, not zero. Illustration values.</aside>
+  </step>
+  <step data-in="n6-own n6-raw n6-ne n6-cmp n6-times n6-floor n6-note" data-out="s5-own s5-raw s5-to s5-rcpt s5-series s5-cap" data-on="m6 n6-own n6-raw n6-ne n6-cmp n6-times n6-floor n6-note" data-hot="m6">
+    <h2>The app’s store settings: two folders, two times, one floor</h2>
+    <aside class="notes">The app also sets the rules for step 6: two separate folders (refused if they are the same, compared by real path), a keep time for each (raw never longer than compact), and a free-space floor checked before every fetch. All are required, and none has a default. The values are the operator’s decision, not ours.</aside>
+  </step>
+</section>
+<section data-label="11 · The library’s part" data-kicker="11 · The library’s part" data-map="steps" data-theme="transit">
+  <step data-in="o-lib" data-out="n6-own n6-raw n6-ne n6-cmp n6-times n6-floor n6-note" data-on="m2 m4 m6 m7 o-lib" data-hot="m2 m4 m6 m7">
+    <h2>The library’s part: it knows how to record</h2>
+    <aside class="notes">footprintjs-datapipeline is a general library: it knows nothing about PowerScale. It turns a slot into one operation, saves what the adapter returns with a receipt, keeps records for the time it is given and expires them on time, and every five minutes summarizes sixty slots, naming every gap. It is built on footprintjs, so each of its stages is recorded while it runs: the receipts and references are written as the work happens, not reconstructed afterwards.</aside>
+  </step>
+  <step data-in="s2-own s2-slot s2-to s2-op s2-again s2-stages" data-out="o-lib" data-on="m2 s2-own s2-slot s2-to s2-op s2-again s2-stages" data-hot="m2" data-focus="path" data-focus-route="s2-slot s2-to s2-op">
+    <h2>Step 2 · Collect: one slot becomes one operation</h2>
+    <aside class="notes">collect() derives the operation’s ID from the slot’s own key, so the same slot always gives the same operation. Asked again with the same request, it returns the saved receipt and the device is not asked twice; the same slot with a different request is refused as a conflict. Every collect runs the same four stages: resolve, fetch (which calls the app’s adapter), check and save.</aside>
+  </step>
+  <step data-in="s4-own s4-check s4-a1 s4-save s4-a2 s4-store s4-note" data-out="s2-own s2-slot s2-to s2-op s2-again s2-stages" data-on="m4 s4-own s4-check s4-a1 s4-save s4-a2 s4-store s4-note" data-hot="m4" data-focus="path" data-focus-route="s4-check s4-a1 s4-save s4-a2 s4-store">
+    <h2>Step 4 · Save raw: checked, saved, a receipt back</h2>
+    <aside class="notes">The check stage validates what the adapter returned (at most 10,000 records and 8 MiB) and gives each record a stable reference. The save stage writes it to the raw store and returns a receipt: committed, partial, failed or unknown. Unknown is followed by a lookup, never a guess. The store is a folder: a small SQLite ledger (which operation, its references and its expiry, never the content) and one compressed file per operation.</aside>
+  </step>
+  <step data-in="s6-own s6-raw s6-cmp s6-set s6-clean s6-tomb" data-out="s4-own s4-check s4-a1 s4-save s4-a2 s4-store s4-note" data-on="m6 s6-own s6-raw s6-cmp s6-set s6-clean s6-tomb" data-hot="m6">
+    <h2>Step 6 · Keep &amp; expire: on time, and the receipt stays</h2>
+    <aside class="notes">Raw answers are kept a short time and compact records longer, with the times the app set. A cleanup worker, separate from the polls, removes expired data: at most 100 operations and ten seconds per sweep. It writes a tombstone first, so reading an expired record answers “expired”, with when it was accepted and that its data was deleted, never “not found”.</aside>
+  </step>
+  <step data-in="s7-own s7-win s7-sum s7-cov" data-out="s6-own s6-raw s6-cmp s6-set s6-clean s6-tomb" data-on="m7 s7-own s7-win s7-sum s7-cov" data-hot="m7">
+    <h2>Step 7 · Summarize: sixty slots, one summary, gaps named</h2>
+    <aside class="notes">Every five minutes, derive() reads sixty saved compact slots and writes one summary: count, mean, variance, minimum, maximum, first and last. It also records coverage: expected, received, missing, failed, partial and empty. Here two slots were not collected, so coverage is 58 of 60 and the gaps stay gaps; a real zero is a valid value. Illustration values.</aside>
+  </step>
+  <step data-in="s7-c1 s7-c2 s7-c3 s7-c4 s7-l1 s7-l2 s7-l3 s7-why" data-out="s7-win s7-sum s7-cov" data-on="m7 s7-own s7-c1 s7-c2 s7-c3 s7-c4 s7-l1 s7-l2 s7-l3 s7-why" data-hot="m7" data-focus="path" data-focus-route="s7-c1 s7-l1 s7-c2 s7-l2 s7-c3 s7-l3 s7-c4">
+    <h2>Every number traces back to its row</h2>
+    <aside class="notes">Each summary keeps its own saved trace: the decisions, requirements and statistics behind it. From a statistic you can open the values and receipts it used, then the compact record, then the saved answer and the exact row, by its pointer and fingerprint. Every link is a reference written while the stage ran, because footprintjs records the run as it goes; nothing is rebuilt afterwards. So a number can be checked instead of trusted.</aside>
+  </step>
+</section>
+<section data-label="12 · The agent’s part" data-kicker="12 · The agent’s part" data-map="steps" data-theme="transit">
+  <step data-in="o-agt" data-out="s7-own s7-c1 s7-c2 s7-c3 s7-c4 s7-l1 s7-l2 s7-l3 s7-why" data-on="m8 o-agt" data-hot="m8">
+    <h2>The agent’s part: it answers from the record</h2>
+    <aside class="notes">The agent is part of the app, built with agentfootprint. A question picks a skill; the skill names the tools and their order; each tool result says what it checked and what it could not; and the answer carries a standing (known, not sure, or ask) worked out by code from the run’s record. Today its PowerScale tools read the live path, InfluxDB; reading these native summaries is the next step.</aside>
+  </step>
+  <step data-in="s8-own a1-q a1-w1 a1-skill a1-w2 a1-tools a1-w3 a1-ans a1-rec" data-out="o-agt" data-on="m8 s8-own a1-q a1-w1 a1-skill a1-w2 a1-tools a1-w3 a1-ans a1-rec" data-hot="m8" data-focus="path" data-focus-route="a1-q a1-w1 a1-skill a1-w2 a1-tools a1-w3 a1-ans">
+    <h2>At run time: a skill, its tools, an answer</h2>
+    <aside class="notes">At run time a question arrives. agentfootprint routes it to a skill: for slowness, triage. The skill says which tools to call and in what order: what the cluster itself reports, which operation class, which clients. The answer comes back with a standing. The whole run is kept as a record (the skill it read, each tool call and result, and what was absent), and it opens later in the Lens tab.</aside>
+  </step>
+  <step data-in="a2-tri a2-inv a2-pro" data-out="a1-q a1-w1 a1-skill a1-w2 a1-tools a1-w3 a1-ans a1-rec" data-on="m8 s8-own a2-tri a2-inv a2-pro" data-hot="m8">
+    <h2>Three PowerScale skills and their tools</h2>
+    <aside class="notes">The app’s agent has three PowerScale skills. Triage asks whether anything is wrong, whether it is slow, and who is talking; inventory covers what is there; protection covers copies and snapshots. Each skill lists its tools; these are the main ones. All of them read the live path today.</aside>
+  </step>
+  <step data-in="a3-now a3-next a3-g1 a3-g2 a3-g3" data-out="a2-tri a2-inv a2-pro" data-on="m8 s8-own a3-now a3-next a3-g1 a3-g2 a3-g3" data-hot="m8">
+    <h2>Today: InfluxDB. Next: these summaries</h2>
+    <aside class="notes">Today the PowerScale tools read what the Python collector saved: InfluxDB and prepared history. The native summaries are built, but no tool reads them yet. The next step is a tool that reads the five-minute summaries and their receipts from the compact store. That brings coverage with every number (“58 of 60 slots”, not just a mean), a reason for every gap, and a path from any number back to its row. This wiring is still to do.</aside>
+  </step>
+  <step data-in="s8-q s8-known s8-unsure s8-why s8-todo" data-out="a3-now a3-next a3-g1 a3-g2 a3-g3" data-on="m8 s8-own s8-q s8-known s8-unsure s8-why s8-todo" data-hot="m8">
+    <h2>The answer says what is known, what is not, and why</h2>
+    <aside class="notes">An illustration of an answer once that wiring exists. Known: read latency averaged 46 ms over 58 of 60 slots. Not sure: two slots were not collected. Why: the two gaps, each with its receipt. The model does not write the standing: agentfootprint works it out from what the tools checked and what they found absent.</aside>
+  </step>
+  <step data-in="a5-g1 a5-g2 a5-g3 a5-g4" data-out="s8-q s8-known s8-unsure s8-why s8-todo" data-on="m8 s8-own a5-g1 a5-g2 a5-g3 a5-g4" data-hot="m8">
+    <h2>What agentfootprint adds</h2>
+    <aside class="notes">Skills and tools are declared, so the record shows which skill ran and which tools it called. An absence stays an absence: a missing value is carried as missing, never read as zero. The standing (known, not sure, ask) is worked out by code from what was checked. And every run is recorded, so it can be opened later in the Lens tab, call by call.</aside>
+  </step>
+</section>
+<section data-label="Part three" data-kicker="Part three" data-theme="ledger">
+  <div class="cv-title"><h1>What we keep</h1><p>The stores, their size, and how they stay small</p></div>
+  <div class="cv-ledger">
+    <div class="lr hd"><span>No.</span><span>Item</span><span>Store</span><span>Kept</span></div>
+    <div class="lr"><span>1</span><span>Each answer</span><span>raw</span><span>a short time</span></div>
+    <div class="lr"><span>2</span><span>Each receipt</span><span>compact</span><span>longer</span></div>
+    <div class="lr"><span>3</span><span>The bookkeeping</span><span>both</span><span>still grows</span></div>
+    <div class="lr"><span>4</span><span>Each summary</span><span>compact</span><span>longer</span></div>
+  </div>
+  <div class="cv-stamp"><b>Receipt stays</b><small>21 Oct 2026</small></div>
+  <aside class="notes">Part three is what we keep: the four things stored, how many bytes they take, and the steps that keep them small. Drawn as a ledger, because it is bookkeeping. The stamp is the rule: when data expires, its receipt stays.</aside>
+</section>
+
+<section data-label="13 · What we store" data-kicker="13 · What we store" data-map="store" data-theme="ledger">
+  <step data-in="k-raw k-cmp k-led k-sum st-raw st-cmp st-sep" data-on="k-raw k-cmp k-led k-sum st-raw st-cmp st-sep">
+    <h2>Four things are kept</h2>
+    <aside class="notes">Two folders, two stores. The raw store keeps each answer from the device, compressed, for a short time. The compact store keeps each slot’s receipt with the watched values and their pointers back, for longer, plus the five-minute summaries with their own traces. Both keep a small ledger, the bookkeeping: which operation, when it was accepted, when it expires. The bookkeeping stays after the data expires, so an expired record can still say “expired” rather than “never existed”.</aside>
+  </step>
+  <step data-in="st-poll" data-out="st-raw st-cmp st-sep" data-on="k-raw k-cmp k-led st-poll">
+    <h2>One poll on disk: about 13 KB</h2>
+    <aside class="notes">Measured on a local probe of 2,000 polls with 256 rows and one watched client: the compressed answer is about 8.6 KB, the compact receipt about 2.2 KB, and the bookkeeping about 2.2 KB. The first two expire; today the bookkeeping does not.</aside>
+  </step>
+  <step data-in="st-day" data-out="st-poll" data-on="k-raw k-cmp k-led st-day">
+    <h2>A fleet day: about 3.1 GB</h2>
+    <aside class="notes">Arithmetic, not a measured fleet day: 14 sources polled every five seconds make 241,920 polls a day. At the measured sizes that is about 2.07 GB of answers, 0.53 GB of receipts and 0.54 GB of bookkeeping a day. More watched clients make the receipts larger. The full-day storage run, on its own disk, will measure it.</aside>
+  </step>
+  <step data-in="st-keep st-grow" data-out="st-day" data-on="k-raw k-cmp k-led st-keep st-grow" data-hot="k-led">
+    <h2>Kept a week or a month: about 30 GB, then flat</h2>
+    <aside class="notes">With example keep times (the operator chooses the real ones), answers kept seven days take about 14.5 GB and receipts kept thirty days about 15.9 GB. Once the stores are full, old data leaves as new data arrives, so that part stays flat at about 30 GB. The bookkeeping is different: today it never expires, so it grows by about 0.54 GB a day, roughly 16 GB a month. That is the part we are working on next.</aside>
+  </step>
+</section>
+<section data-label="14 · How we keep it small" data-kicker="14 · How we keep it small" data-map="store" data-theme="ledger">
+  <step data-in="r1 r2 r3" data-out="st-keep st-grow" data-on="k-raw k-cmp r1 r2 r3">
+    <h2>Per poll: record less, compress, keep values</h2>
+    <aside class="notes">Three choices keep each poll small. First, this path records no per-row trace: the old full-trace path, at only 50 rows, came to about 30 GB a day (8.0 GB of packed data plus 21.8 GB of traces, a straight-line projection from a ten-minute run). Second, each answer is one gzip file. Third, the compact store keeps only the watched values and pointers (about 2.2 KB), not the rows.</aside>
+  </step>
+  <step data-in="r4 r5 r6" data-on="k-raw k-cmp k-sum r4 r5 r6">
+    <h2>Over time: raw goes first, expiry, summaries</h2>
+    <aside class="notes">Raw answers are never kept longer than the compact records that point at them. A cleanup worker expires data on time, in small sweeps, and leaves a receipt. And every five minutes sixty slots become one summary, so long questions read summaries, not every slot. The keep-time rules and the cleanup wiring are in review; the rest is built.</aside>
+  </step>
+  <step data-in="r7 r8" data-on="k-led r7 r8" data-hot="k-led">
+    <h2>The bookkeeping: seal it, then choose how long</h2>
+    <aside class="notes">The bookkeeping is the one part that still grows. A draft seals it into compact, checksummed files, 4.43 times smaller including overhead: about 0.5 KB a poll instead of 2.2, or about 122 MB a day instead of 0.54 GB, by arithmetic. It does not yet compact a running store. The last step is choosing how long history is kept; until then even sealed bookkeeping grows, about 44.5 GB a year. That length is the operator’s decision, and it waits on a rule for retiring whole periods.</aside>
+  </step>
+</section>
+<section data-label="Part four" data-kicker="Part four" data-theme="scope">
+  <div class="cv-title"><h1>What it costs, how it grows</h1><p>Time, memory and disk, as measured</p></div>
+  <div class="cv-screen"><svg viewBox="0 0 1120 400" aria-hidden="true"><path class="trace" d="M0 300 H40 V90 H42.5 V300 H320 V90 H322.5 V300 H600 V90 H602.5 V300 H880 V90 H882.5 V300 H1120"/></svg><span class="scale">5 s a slot</span><span class="cap">one poll every 5 s, 45 ms each</span></div>
+  <div class="cv-read">
+    <div><b>45 ms</b><small>one poll</small></div>
+    <div><b>≈ 290 MB</b><small>14 pollers</small></div>
+    <div><b>≈ 3.1 GB</b><small>a fleet day on disk</small></div>
+    <div><b>241,920</b><small>polls a day</small></div>
+  </div>
+  <aside class="notes">Part four is what it costs and how it grows: the time per poll, memory, summaries and cleanup; then the load at fleet scale, what grows with time, and what still has to be proven. Drawn as an instrument, because these are readings. On the screen, each thin spike is one poll, drawn to scale: 45 ms out of every five seconds.</aside>
+</section>
+
+<section data-label="15 · Performance" data-kicker="15 · Performance" data-map="perf" data-theme="scope">
+  <step data-in="p1 p2 p3 p4 pf-budget pf-old" data-on="p1 pf-budget pf-old" data-quiet data-hot="p1">
+    <h2>One poll: 45 ms of a 5-second slot</h2>
+    <aside class="notes">Measured on a laptop with a synthetic device, a single poll at 256 rows takes a median of 45 ms (35 ms at 50 rows), including saving both records: under one percent of its five-second slot. For contrast, the old full-trace path, with 14 sources polling at once at only 50 rows, had a 95th percentile of 3.49 seconds and 24 deadline misses in ten minutes, and at 256 rows its memory guard stopped it. The two runs are not like-for-like; the fleet-rate test of the new path is still to run.</aside>
+  </step>
+  <step data-in="pf-mem" data-out="pf-budget pf-old" data-on="p2 pf-mem" data-hot="p2">
+    <h2>Memory: about 290 MB for fourteen pollers</h2>
+    <aside class="notes">One process running fourteen pollers over one pair of stores, plus the cleanup worker, peaked at about 290 MB over 1,400 polls; with cleanup off, about 276 MB. In a separate 3,000-poll probe the main heap stayed flat, 38.4 to 38.6 MB from poll 600 to 3,000. The old path peaked at 1.96 GB at 50 rows and reached 2.45 GB at 256 rows before it was stopped. These are short runs; flat memory over a whole day is still to prove.</aside>
+  </step>
+  <step data-in="pf-sum pf-sumw" data-out="pf-mem" data-on="p3 pf-sum pf-sumw" data-hot="p3">
+    <h2>One summary: 261 ms</h2>
+    <aside class="notes">Summarizing one five-minute window (sixty slots, sixteen watched series) took 261 ms in the test fixture, and its saved trace is about 0.8 MB, well under the 8 MiB cap. The plan runs summaries in their own worker, never on the poll path; that worker is still to build.</aside>
+  </step>
+  <step data-in="pf-clean pf-open" data-out="pf-sum pf-sumw" data-on="p4 pf-clean pf-open" data-hot="p4">
+    <h2>Cleanup runs beside the polls</h2>
+    <aside class="notes">Cleanup has its own worker: at most 100 operations and ten seconds per sweep, and it is never queued ahead of a poll. Still being checked: in the rerun on its own disk, one save hit the five-second limit. Diagnostics were added and no safeguard was loosened; that run’s record will show the cause.</aside>
+  </step>
+</section>
+<section data-label="16 · Scaling" data-kicker="16 · Scaling" data-map="scale" data-theme="scope">
+  <step data-in="q1 q2 q3 q4 q5 sc-a sc-x sc-b sc-eq sc-c sc-live" data-on="q1 sc-a sc-x sc-b sc-eq sc-c sc-live" data-quiet data-hot="q1">
+    <h2>The load: 241,920 polls a day</h2>
+    <aside class="notes">Fourteen sources, one poll every five seconds each: 17,280 slots a day per source, 241,920 polls a day, about 2.8 a second. Meanwhile the live path, the Python collector, keeps running unchanged; this one stays switched off.</aside>
+  </step>
+  <step data-in="sc-stag sc-burst" data-out="sc-a sc-x sc-b sc-eq sc-c sc-live" data-on="q2 sc-stag sc-burst" data-hot="q2">
+    <h2>Staggered, not all at once</h2>
+    <aside class="notes">The plan staggers sources across the slot: source number times five seconds divided by fourteen, so one source starts every 357 ms. The old test dispatched all fourteen in the same instant, so every poll and summary competed together; that is where it missed deadlines and ran out of memory. The staggering dispatcher is still to build.</aside>
+  </step>
+  <step data-in="cap1 cap2 cap3 cap4 cap5 sc-capn" data-out="sc-stag sc-burst" data-on="q3 cap1 cap2 cap3 cap4 cap5 sc-capn" data-hot="q3">
+    <h2>Every poll has the same ceiling</h2>
+    <aside class="notes">Each poll is bounded: five seconds, a 2 MiB answer, 10,000 records, an 8 MiB record and at most sixteen watched series. History lives in the stores on disk, not in memory, so a poll on day 300 should cost what a poll on day 1 costs. The day-long run will check that.</aside>
+  </step>
+  <step data-in="sc-add" data-out="cap1 cap2 cap3 cap4 cap5 sc-capn" data-on="q4 sc-add" data-hot="q4">
+    <h2>One more source: one more poller</h2>
+    <aside class="notes">Adding a source adds one poller and 17,280 polls a day. By arithmetic from the measured sizes, that is about 186 MB a day of answers and receipts, which expire, and about 38 MB a day of bookkeeping today (about 9 MB once sealed), which stays.</aside>
+  </step>
+  <step data-in="sc-grow" data-out="sc-add" data-on="q5 sc-grow" data-hot="q5">
+    <h2>What grows: the bookkeeping, until history has a length</h2>
+    <aside class="notes">An illustration by arithmetic. In today’s format the bookkeeping for fourteen sources grows about 195 GB a year; sealed, about 44.5 GB a year. With a kept-history length, for example thirteen months (a year-over-year comparison plus a month), it stops growing after that. The length is not chosen yet.</aside>
+  </step>
+  <step data-in="sc-prove" data-out="sc-grow" data-on="q1 q2 q3 sc-prove">
+    <h2>Still to prove</h2>
+    <aside class="notes">Before anything is switched on: a full day of storage on its own disk (running now; the last attempt ran out of room on a shared laptop disk), then one hour at 50 rows and one at 256 rows, then 24 hours at 256 rows. To pass: at least 99.9% of slots saved or explicitly failed, the 99th percentile under five seconds, flat memory, and every summary done within a minute of its window. The result will be “passes on this machine at this rate”, not a fleet guarantee.</aside>
+  </step>
+</section>
+<section data-label="17 · Summary" data-kicker="17 · Summary" data-map="summary" data-theme="finale">
+  <step data-in="y-app y-lib y-agt" data-on="y-app y-lib y-agt">
+    <h2>Three owners, three jobs</h2>
+    <aside class="notes">The app knows PowerScale: when to ask, how to ask, what a row means, and the store rules. The library knows how to record: one operation per slot, a receipt for everything, expiry on time, and summaries every five minutes. The agent answers from the record, with a standing on every answer.</aside>
+  </step>
+  <step data-in="y-w1 y-w2 y-w3 y-w4" data-on="y-w1 y-w2 y-w3 y-w4">
+    <h2>Why footprintjs</h2>
+    <aside class="notes">Why build it on footprintjs. Every step leaves a receipt, recorded while it runs, not rebuilt afterwards. A gap is named, never a zero: not collected, missing, invalid or empty, each with its reason. Every number traces back: summary, receipt, saved answer, the exact row. And every answer says how sure it is, and why.</aside>
+  </step>
+  <step data-in="y-built y-pend" data-out="y-w1 y-w2 y-w3 y-w4" data-on="y-built y-pend">
+    <h2>Built and tested; switched off</h2>
+    <aside class="notes">As of 21 October 2026, built, tested and switched off: the lightweight poller and its two stores; receipts, named gaps and the trail back; five-minute summaries with their trace; and the agent’s skills and tools on the live path. Still to do: the keep times and disk floor (in review); a full storage day on its own disk (running); sealed bookkeeping (a draft) and the history length; a summary worker, the agent tool for summaries, and then switching it on. The Python collector keeps running until then.</aside>
+  </step>
+</section>

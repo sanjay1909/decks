@@ -1,38 +1,42 @@
-# PowerScale, explained: a StoryDeck progressive deck (v2)
+# PowerScale, explained: source
 
-37 clicks on StoryDeck's Watch runtime (`<deck-stage>`): a title, then two diagrams that build click by click.
-- **The big picture.** Drawn components: a VM window, a file client, a network wire with a packet, PowerScale
-  node blades, a collector clipboard, an InfluxDB store and a Footprint receipt. Packets run along each route as it
-  lights.
-- **"Zoom into the data".** One synthetic poll followed from the raw API response to a finding. A JSON row lifts out
-  (`apart`) and becomes a typed line-protocol point; the fingerprint stamp travels into the run receipt (`place`).
+A [StoryDeck](https://www.npmjs.com/package/footprint-storydeck) deck folder: 80 clicks in four parts, each drawn in its
+own look (`data-theme` on its sections), between a cover and a closing slide.
 
-Focus strategies used: `grey` (default), `path`, `zoom`, `apart`, `place`. The diagrams carry at most about 12
-words per click. Explanations are in the speaker notes and `body.md` (the Read lens); references appear only there.
-`index-v1.html` is the first version (26 clicks, boxes only); its sources are in `v1-source/`.
+| Part | Sections | Look |
+|---|---|---|
+| One · The request | 1–8 | a drawing sheet (`blueprint`) |
+| Two · Who does what | 9–12 | a line map (`transit`) |
+| Three · What we keep | 13–14 | a ledger (`ledger`) |
+| Four · What it costs, how it grows | 15–17 | an instrument (`scope`), then the closing summary (`finale`) |
 
-**Open:** double-click `index.html` (self-contained, no network requests). → / Space / click to advance,
-← to go back. **T** or the corner button switches light/dark. **N** shows notes, **P** opens the presenter window,
-**L** reads the deck aloud with the browser's voice.
+Every look has a light and a dark version (T in the deck).
+
+## Build
+
+```
+npx footprint-storydeck build .     # → index.html, one self-contained page with no network requests
+npx footprint-storydeck check .     # what to fix, click by click
+cp index.html ../index.html
+```
+
+Part looks (`data-theme`) need StoryDeck 0.8.0 or later. Until that is on npm, build with StoryDeck's main branch;
+0.7.0 builds the same clicks without the part looks.
 
 ## Files
 
-| file | what |
+| File | What it holds |
 |---|---|
-| `deck/map.html` | the big picture: every `data-k` element is a focus piece |
-| `deck/data.html` | the data zoom (one synthetic poll, illustration) |
-| `deck/icons.mjs` | the drawn identities (inline SVG) |
-| `deck/clicks.html` | the parts and their clicks (`data-in/out/on`, `data-focus`), headlines, notes |
-| `deck/theme.css` | light + dark tokens, the look, the packet animation |
-| `post.json` + `body.md` | StoryDeck's Read/Scroll source (sections → clicks; prose + references) |
-| `build.mjs` | the build |
-| `index.html`, `deck-data.json` | built outputs |
+| `deck.json` | title, footer, the map area |
+| `clicks.html` | the parts and their clicks: what comes in, what lights, headlines, speaker notes |
+| `map.html`, `data.html` | Part one: the request and its evidence; one poll's data |
+| `flow.html`, `steps.html` | Part two: the flow once, then each owner's steps |
+| `store.html` | Part three: what we keep, and how it stays small |
+| `perf.html`, `scale.html` | Part four: performance and scaling |
+| `summary.html` | the closing summary |
+| `theme.css` | the six looks (cover, blueprint, transit, ledger, scope, finale), light and dark |
+| `post.json` | the Read and Scroll lenses' sections |
+| `icons/` | the drawn identities |
 
-## Rebuild
-
-```bash
-npm install --legacy-peer-deps   # footprint-storydeck 0.6.0
-npm run build                    # = node build.mjs → index.html + deck-data.json
-```
-
-The build fails if a click names a missing piece or `post.json` names a missing slide.
+Numbers are measured on a local, synthetic setup, or worked out from those measurements, and each says which.
+Example values are labelled "illustration". No live system was queried.

@@ -96,17 +96,112 @@
         "8 · Investigation · 1",
         "8 · Investigation · 2",
         "8 · Investigation · 3",
-        "8 · Investigation · 4"
+        "8 · Investigation · 4",
+        "8 · Investigation · 5"
       ]
     },
     {
-      "key": "status",
-      "label": "Build status",
-      "heading": "What is complete, and what remains",
+      "key": "flow-once",
+      "label": "How collection works",
+      "heading": "The native client poll, once",
       "slides": [
-        "9 · Build status · 1",
-        "9 · Build status · 2",
-        "9 · Build status · 3"
+        "9 · How collection works · 1",
+        "9 · How collection works · 2",
+        "9 · How collection works · 3"
+      ]
+    },
+    {
+      "key": "app",
+      "label": "The app’s part",
+      "heading": "The app knows PowerScale",
+      "slides": [
+        "10 · The app’s part · 1",
+        "10 · The app’s part · 2",
+        "10 · The app’s part · 3",
+        "10 · The app’s part · 4",
+        "10 · The app’s part · 5",
+        "10 · The app’s part · 6"
+      ]
+    },
+    {
+      "key": "library",
+      "label": "The library’s part",
+      "heading": "The library knows how to record",
+      "slides": [
+        "11 · The library’s part · 1",
+        "11 · The library’s part · 2",
+        "11 · The library’s part · 3",
+        "11 · The library’s part · 4",
+        "11 · The library’s part · 5",
+        "11 · The library’s part · 6"
+      ]
+    },
+    {
+      "key": "agent",
+      "label": "The agent’s part",
+      "heading": "The agent answers from the record",
+      "slides": [
+        "12 · The agent’s part · 1",
+        "12 · The agent’s part · 2",
+        "12 · The agent’s part · 3",
+        "12 · The agent’s part · 4",
+        "12 · The agent’s part · 5",
+        "12 · The agent’s part · 6"
+      ]
+    },
+    {
+      "key": "stored",
+      "label": "What we store",
+      "heading": "What we keep, and how much",
+      "slides": [
+        "13 · What we store · 1",
+        "13 · What we store · 2",
+        "13 · What we store · 3",
+        "13 · What we store · 4"
+      ]
+    },
+    {
+      "key": "small",
+      "label": "How we keep it small",
+      "heading": "Eight steps keep storage small",
+      "slides": [
+        "14 · How we keep it small · 1",
+        "14 · How we keep it small · 2",
+        "14 · How we keep it small · 3"
+      ]
+    },
+    {
+      "key": "performance",
+      "label": "Performance",
+      "heading": "Time and memory, measured",
+      "slides": [
+        "15 · Performance · 1",
+        "15 · Performance · 2",
+        "15 · Performance · 3",
+        "15 · Performance · 4"
+      ]
+    },
+    {
+      "key": "scale",
+      "label": "Scaling",
+      "heading": "From one poll to a fleet",
+      "slides": [
+        "16 · Scaling · 1",
+        "16 · Scaling · 2",
+        "16 · Scaling · 3",
+        "16 · Scaling · 4",
+        "16 · Scaling · 5",
+        "16 · Scaling · 6"
+      ]
+    },
+    {
+      "key": "summary",
+      "label": "Summary",
+      "heading": "Who does what, and why footprintjs",
+      "slides": [
+        "17 · Summary · 1",
+        "17 · Summary · 2",
+        "17 · Summary · 3"
       ]
     }
   ]

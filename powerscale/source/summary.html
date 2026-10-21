@@ -1,0 +1,13 @@
+<!--
+"Summary": who does what, why footprintjs, and the status on 21 October 2026 (the retention work is in review and sealed bookkeeping is a draft;
+  the isolated-disk storage run is underway). Nothing is switched on.
+-->
+<div data-k="y-app" class="col3 app" style="left:40px;top:240px;width:600px;height:270px"><div class="who">The app</div><div class="big">knows PowerScale</div><small>when to ask, how to ask, what a row means, and the store rules</small></div>
+<div data-k="y-lib" class="col3 lib" style="left:660px;top:240px;width:600px;height:270px"><div class="who">footprintjs-datapipeline</div><div class="big">knows how to record</div><small>one operation per slot, saved with a receipt, expired on time, summarized every 5 minutes</small></div>
+<div data-k="y-agt" class="col3 agent" style="left:1280px;top:240px;width:600px;height:270px"><div class="who">agent · agentfootprint</div><div class="big">answers from the record</div><small>skills and tools, and a standing on every answer: known, not sure, ask, and why</small></div>
+<div data-k="y-w1" class="whyrow" style="left:40px;top:560px;width:1840px;height:84px"><b>Every step leaves a receipt</b><span>recorded while it runs (footprintjs), not rebuilt afterwards</span></div>
+<div data-k="y-w2" class="whyrow" style="left:40px;top:658px;width:1840px;height:84px"><b>A gap is named, never a zero</b><span>not collected · missing · invalid · empty, each with its reason</span></div>
+<div data-k="y-w3" class="whyrow" style="left:40px;top:756px;width:1840px;height:84px"><b>Every number traces back</b><span>summary → receipt → saved answer → the exact row</span></div>
+<div data-k="y-w4" class="whyrow" style="left:40px;top:854px;width:1840px;height:84px"><b>Every answer says how sure it is</b><span>known · not sure · ask, with the why</span></div>
+<div data-k="y-built" class="card status built" style="left:40px;top:560px;width:900px;height:290px"><b>Built · switched off</b><span>✓ Lightweight poller and its two stores</span><span>✓ Receipts, named gaps, the trail back</span><span>✓ 5-minute summaries with their trace</span><span>✓ The agent’s skills and tools (live path)</span></div>
+<div data-k="y-pend" class="card status pending" style="left:980px;top:560px;width:900px;height:290px"><b>Still to do</b><span>○ Keep times + disk floor (in review)</span><span>○ A full storage day on its own disk (running)</span><span>○ Sealed bookkeeping (draft) · history length</span><span>○ Summary worker · agent tool · switch on</span></div>

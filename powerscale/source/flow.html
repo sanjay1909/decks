@@ -1,0 +1,29 @@
+<!--
+  "The flow, once": the native client poll as eight steps on one line. Each step stands in its owner's band — the app (it
+  knows PowerScale) above, footprintjs-datapipeline (the library) below — so every crossing of the dashed line is a call
+  between them. Step 8 is the app's agent (agentfootprint), drawn in its own colour. Built, not switched on. Same piece rules as map.html.
+-->
+<div data-k="band-app" class="band app" style="left:260px;top:340px;width:1630px;height:210px"></div>
+<div data-k="band-lib" class="band lib" style="left:260px;top:610px;width:1630px;height:210px"></div>
+<div data-k="band-app" class="band-name app" style="left:1500px;top:346px;width:380px;height:30px">The app · knows PowerScale</div>
+<div data-k="band-lib" class="band-name lib" style="left:1360px;top:786px;width:520px;height:30px">Library · footprintjs-datapipeline</div>
+<div data-k="line" class="boundary" style="left:260px;top:566px;width:1630px;height:28px"><span>the boundary</span></div>
+<div data-k="dev" class="box ps flowdev" style="left:684px;top:232px;width:170px;height:96px"><b>PowerScale</b><small>client stats</small></div>
+<div data-k="off" class="tag-chip" style="left:260px;top:846px;width:350px;height:34px">built · not switched on</div>
+<div data-k="n1" class="node app" style="left:280px;top:385px;width:170px;height:140px"><span class="num">1</span><b>Schedule</b><small>app</small></div>
+<div data-k="n2" class="node lib" style="left:482px;top:645px;width:170px;height:140px"><span class="num">2</span><b>Collect</b><small>library</small></div>
+<div data-k="n3" class="node app" style="left:684px;top:385px;width:170px;height:140px"><span class="num">3</span><b>Fetch</b><small>app</small></div>
+<div data-k="n4" class="node lib" style="left:886px;top:645px;width:170px;height:140px"><span class="num">4</span><b>Save raw</b><small>library</small></div>
+<div data-k="n5" class="node app" style="left:1088px;top:385px;width:170px;height:140px"><span class="num">5</span><b>Compact</b><small>app</small></div>
+<div data-k="n6" class="node lib" style="left:1290px;top:645px;width:170px;height:140px"><span class="num">6</span><b>Keep</b><small>library</small></div>
+<div data-k="n7" class="node lib" style="left:1492px;top:645px;width:170px;height:140px"><span class="num">7</span><b>Summarize</b><small>library</small></div>
+<div data-k="n8" class="node agent" style="left:1694px;top:385px;width:170px;height:140px"><span class="num">8</span><b>Answer</b><small>agent</small></div>
+<i data-k="w1" class="wire flowwire down pkt" data-arrow="430 527 502 643"></i>
+<i data-k="w2" class="wire flowwire up pkt" data-arrow="632 643 704 527"></i>
+<i data-k="w3" class="wire flowwire down pkt" data-arrow="834 527 906 643"></i>
+<i data-k="w4" class="wire flowwire up pkt" data-arrow="1036 643 1108 527"></i>
+<i data-k="w5" class="wire flowwire down pkt" data-arrow="1238 527 1310 643"></i>
+<i data-k="w6" class="wire flowwire flat pkt" data-arrow="1462 715 1490 715"></i>
+<i data-k="w7" class="wire flowwire up pkt" data-arrow="1642 643 1714 527"></i>
+<i data-k="dreq" class="wire req pkt" data-arrow="740 383 740 330"></i>
+<i data-k="dret" class="wire ret pkt" data-arrow="800 330 800 383"></i>
