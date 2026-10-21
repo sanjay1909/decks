@@ -1,0 +1,4 @@
+node_modules/
+.DS_Store
+source/index.html
+source/deck-data.json

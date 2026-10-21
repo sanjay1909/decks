@@ -1,0 +1,113 @@
+{
+  "slug": "powerscale-explained",
+  "title": "PowerScale, explained",
+  "description": "A request, a measurement, an evidence trail: one file request into PowerScale, the statistics it keeps, the collector beside the path, and the evidence behind every finding. Illustrative examples, no live systems.",
+  "date": "2026-10-20",
+  "author": "Sanjay Krishna Anbalagan",
+  "tags": [
+    "powerscale",
+    "observability",
+    "evidence"
+  ],
+  "sections": [
+    {
+      "key": "file-path",
+      "label": "File path",
+      "heading": "The file request and its reply",
+      "slides": [
+        "1 · The file path · 1",
+        "1 · The file path · 2",
+        "1 · The file path · 3"
+      ]
+    },
+    {
+      "key": "inside",
+      "label": "Inside PowerScale",
+      "heading": "What PowerScale does with a request",
+      "slides": [
+        "2 · Inside PowerScale · 1",
+        "2 · Inside PowerScale · 2"
+      ]
+    },
+    {
+      "key": "statistics",
+      "label": "Statistics",
+      "heading": "Measurements exist before our collector asks",
+      "slides": [
+        "3 · Statistics already exist · 1",
+        "3 · Statistics already exist · 2",
+        "3 · Statistics already exist · 3"
+      ]
+    },
+    {
+      "key": "collector",
+      "label": "Collector",
+      "heading": "A second, separate request",
+      "slides": [
+        "4 · The collector, beside the path · 1",
+        "4 · The collector, beside the path · 2"
+      ]
+    },
+    {
+      "key": "collection",
+      "label": "Collection",
+      "heading": "What gets collected, and when",
+      "slides": [
+        "5 · Collection → InfluxDB · 1",
+        "5 · Collection → InfluxDB · 2",
+        "5 · Collection → InfluxDB · 3",
+        "5 · Collection → InfluxDB · 4",
+        "5 · Collection → InfluxDB · 5"
+      ]
+    },
+    {
+      "key": "data",
+      "label": "Zoom into the data",
+      "heading": "How one poll's data is shaped, from the device response to a finding",
+      "slides": [
+        "6 · Zoom into the data · 1",
+        "6 · Zoom into the data (detail) · 1",
+        "6 · Zoom into the data (detail) · 2",
+        "6 · Zoom into the data (detail) · 3",
+        "6 · Zoom into the data (detail) · 4",
+        "6 · Zoom into the data (detail) · 5",
+        "6 · Zoom into the data (detail) · 6",
+        "6 · Zoom into the data (detail) · 7",
+        "6 · Zoom into the data (detail) · 8",
+        "6 · Zoom into the data (detail) · 9",
+        "6 · Zoom into the data (detail) · 10",
+        "6 · Zoom into the data (detail) · 11"
+      ]
+    },
+    {
+      "key": "evidence",
+      "label": "Evidence",
+      "heading": "An explainable evidence trail",
+      "slides": [
+        "7 · Evidence · 1",
+        "7 · Evidence · 2"
+      ]
+    },
+    {
+      "key": "investigation",
+      "label": "Investigation",
+      "heading": "“The scan is slow. What do we know?”",
+      "slides": [
+        "8 · Investigation · 1",
+        "8 · Investigation · 2",
+        "8 · Investigation · 3",
+        "8 · Investigation · 4"
+      ]
+    },
+    {
+      "key": "status",
+      "label": "Build status",
+      "heading": "What is complete, and what remains",
+      "slides": [
+        "9 · Build status · 1",
+        "9 · Build status · 2",
+        "9 · Build status · 3"
+      ]
+    }
+  ]
+}

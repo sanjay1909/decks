@@ -1,0 +1,72 @@
+<!--
+  "Zoom into the data": the second diagram, one synthetic poll followed from the device's response to a finding.
+  LOCAL SEED, illustration only: addresses are from the documentation range 192.0.2.0/24, the fingerprint is made up.
+  Same piece rules as map.html. <i data-bars="N" data-gaps="i j"> becomes the window's N poll slots (build.mjs · bars).
+-->
+
+<!-- the raw API response: three client rows -->
+<div data-k="rsp" class="panel rsp" style="left:50px;top:240px;width:690px;height:392px">
+  <div class="hd"><i class="ic sm" data-icon="doc"></i>API response<span class="tag">illustration</span></div>
+  <code class="open">{"client": [</code><code class="close">]}</code>
+</div>
+<div data-k="r0" class="jrow" style="left:66px;top:336px;width:552px;height:76px"><code>{"addr":"192.0.2.11","proto":"nfs3",<br>&nbsp;"op":"read","node":2,"ops":420,"time_avg":1180},</code></div>
+<div data-k="r1" class="jrow" style="left:66px;top:422px;width:552px;height:76px"><code>{"addr":"192.0.2.24","proto":"smb2",<br>&nbsp;"op":"write","node":1,"ops":3,"time_avg":900},</code></div>
+<div data-k="r2" class="jrow" style="left:66px;top:508px;width:552px;height:76px"><code>{"addr":"192.0.2.37","proto":"smb2",<br>&nbsp;"op":"read","node":3,"ops":35,"time_avg":48200}</code></div>
+<div data-k="sel0" class="sel keep" style="left:626px;top:350px;width:104px;height:48px">✓ rate</div>
+<div data-k="sel1" class="sel drop" style="left:626px;top:436px;width:104px;height:48px">✕ not selected</div>
+<div data-k="sel2" class="sel keep" style="left:626px;top:522px;width:104px;height:48px">✓ peak</div>
+
+<!-- the row's address: a pointer into one response, and that response's fingerprint -->
+<div data-k="ptr" class="chip ptr" style="left:50px;top:650px;width:690px;height:52px"><code class="pp">/client/2</code><code class="sha">sha256:9f2c…41ab</code></div>
+
+<!-- the typed point: one InfluxDB line, measurement · tags · fields -->
+<div data-k="pt-meas" class="pt" style="left:790px;top:240px;width:1090px;height:52px"><i class="ic sm" data-icon="tsdb"></i><em>measurement</em><code class="m">client_perf</code></div>
+<div data-k="pt-tags" class="pt" style="left:790px;top:300px;width:1090px;height:52px"><em>tags</em><code class="t">addr=192.0.2.37,proto=smb2,op=read,node=3</code></div>
+<div data-k="pt-fields" class="pt" style="left:790px;top:360px;width:1090px;height:52px"><em>fields</em><code><span class="ty-f">time_avg_us=48200.0</span>,<span class="ty-i">ops=35i</span>,<span class="ty-s">reason="peak"</span>,<span class="ty-b">selected=true</span></code></div>
+<div data-k="legend" class="legend" style="left:790px;top:424px;width:640px;height:40px"><span class="ty-f">float</span><span class="ty-i">integer i</span><span class="ty-s">string</span><span class="ty-b">boolean</span></div>
+<div data-k="units" class="chip units" style="left:1446px;top:424px;width:434px;height:40px">µs: 48,200 µs = 48.2 ms</div>
+
+<!-- the run receipt: one card per poll -->
+<div data-k="rcpt" class="panel rcpt" style="left:790px;top:520px;width:450px;height:330px">
+  <div class="hd"><i class="ic sm" data-icon="receipt"></i>Run receipt<span class="tag">illustration</span></div>
+  <dl><dt>start</dt><dd>10:05:05.000</dd><dt>end</dt><dd>10:05:05.412</dd><dt>status</dt><dd class="ok">ok</dd><dt>rows</dt><dd>3 seen · 2 kept · 1 dropped</dd><dt>hash</dt><dd>sha256:9f2c…41ab</dd></dl>
+</div>
+
+<!-- a 5-minute window: 60 poll slots, two of them gaps -->
+<div data-k="win" class="panel win" style="left:1270px;top:520px;width:610px;height:140px">
+  <div class="hd"><i class="ic sm" data-icon="bars"></i>5-minute window · 60 polls</div>
+  <i data-bars="60" data-gaps="23 47"></i>
+</div>
+<div data-k="gaps" class="gap" style="left:1503px;top:582px;width:11px;height:68px"></div>
+<div data-k="gaps" class="gap" style="left:1743px;top:582px;width:11px;height:68px"></div>
+<div data-k="gapcall" class="callout" style="left:1270px;top:672px;width:610px;height:58px">Missing = unknown, not zero</div>
+<div data-k="summary" class="chip summary" style="left:1270px;top:742px;width:610px;height:84px"><span><b>mean 46 ms · peak 61 ms</b><span class="tag">illustration</span></span><span>58 of 60 polls</span></div>
+
+<!-- the finding, and its trail backwards -->
+<div data-k="finding" class="chip finding" style="left:1270px;top:880px;width:610px;height:64px"><i class="ic sm" data-icon="receipt"></i>client 192.0.2.37 · latency high</div>
+<i data-k="l1" class="wire link pkt" data-arrow="1575 878 1575 830"></i>
+<i data-k="l2" class="wire link pkt" data-arrow="1575 740 1575 664"></i>
+<i data-k="l3" class="wire link pkt" data-arrow="1268 590 1242 590"></i>
+<i data-k="l4" class="wire link pkt" data-arrow="788 560 734 548"></i>
+
+<!-- two evidence paths, side by side -->
+<div data-k="lane-a" class="lane-title" style="left:60px;top:262px;width:700px;height:44px">Python → InfluxDB</div>
+<div data-k="dev-a" class="box lane gone-src" style="left:60px;top:316px;width:250px;height:150px"><i class="ic" data-icon="doc"></i><b>response</b><small>not kept</small></div>
+<i data-k="aa1" class="wire req" data-arrow="312 391 408 391"></i>
+<div data-k="py-a" class="box lane collector" style="left:410px;top:316px;width:250px;height:150px"><i class="ic" data-icon="probe"></i><b>Python</b></div>
+<i data-k="aa2" class="wire req" data-arrow="662 391 758 391"></i>
+<div data-k="db-a" class="box lane influx" style="left:760px;top:316px;width:250px;height:150px"><i class="ic" data-icon="tsdb"></i><b>InfluxDB</b></div>
+<div data-k="flag-a" class="flag" style="left:1030px;top:362px;width:420px;height:58px">◀ trail starts here</div>
+
+<div data-k="lane-b" class="lane-title" style="left:60px;top:530px;width:700px;height:44px">Native Node collector</div>
+<div data-k="dev-b" class="box lane" style="left:60px;top:584px;width:250px;height:150px"><i class="ic" data-icon="doc"></i><b>response</b><small>captured</small></div>
+<i data-k="ab1" class="wire link pkt" data-arrow="408 659 312 659"></i>
+<div data-k="node-b" class="box lane collector" style="left:410px;top:584px;width:250px;height:150px"><i class="ic" data-icon="probe"></i><b>Node</b></div>
+<i data-k="ab2" class="wire link pkt" data-arrow="758 659 662 659"></i>
+<div data-k="db-b" class="box lane influx" style="left:760px;top:584px;width:250px;height:150px"><i class="ic" data-icon="tsdb"></i><b>InfluxDB</b><small>+ receipt</small></div>
+<div data-k="flag-b" class="flag" style="left:60px;top:754px;width:420px;height:58px">▲ trail starts here</div>
+
+<!-- drawn last, so they travel over everything: the row lifting out (a copy drawn over r2; apart flies it to
+     where the point is born) and the fingerprint stamp (place carries it into the receipt) -->
+<div data-k="carry" class="jrow carry" style="left:66px;top:508px;width:552px;height:76px"><code>{"addr":"192.0.2.37","proto":"smb2",<br>&nbsp;"op":"read","node":3,"ops":35,"time_avg":48200}</code></div>
+<div data-k="stamp" class="chip stamp" style="left:196px;top:656px;width:214px;height:40px"><code>sha256:9f2c…41ab</code></div>

@@ -1,0 +1,77 @@
+<!--
+  The big picture, the one diagram parts 1–5 and 7–9 are told on (1920×1080 slide pixels).
+  Every element with data-k="name …" and an inline left/top/width/height is a StoryDeck focus piece; pieces never
+  nest (the stages and counters "inside" PowerScale are siblings drawn over its box).
+  <i data-k data-arrow="x1 y1 x2 y2 [bend]"> becomes an SVG wire (build.mjs · wire); class "pkt" gives it a packet
+  that runs along it at its turn on a `path` click. <i class="ic" data-icon="…"> is a drawn identity (deck/icons.mjs).
+  Generic labels only: no customer, cluster or host names.
+-->
+
+<!-- ── 1 · the file path ─────────────────────────────────────────────── -->
+<div data-k="app" class="box app" style="left:40px;top:296px;width:210px;height:158px"><i class="ic" data-icon="vm"></i><b>Application</b><small>scan app on a VM</small></div>
+<i data-k="req1" class="wire req pkt" data-arrow="252 352 318 352"></i>
+<div data-k="os" class="box os" style="left:320px;top:296px;width:200px;height:158px"><i class="ic" data-icon="client"></i><b>File client</b><small>SMB / NFS</small></div>
+<i data-k="req2" class="wire req pkt" data-arrow="522 352 588 352"></i>
+<div data-k="net" class="box net" style="left:590px;top:296px;width:140px;height:158px"><i class="ic" data-icon="net"></i><b>Network</b></div>
+<i data-k="req3" class="wire req pkt" data-arrow="732 352 798 352"></i>
+
+<i data-k="ret3" class="wire ret pkt" data-arrow="798 410 732 410"></i>
+<i data-k="ret2" class="wire ret pkt" data-arrow="588 410 522 410"></i>
+<i data-k="ret1" class="wire ret pkt" data-arrow="318 410 252 410"></i>
+<div data-k="ret1" class="lbl ret-lbl" style="left:252px;top:464px;width:300px;height:30px">← file bytes come back</div>
+
+<div data-k="ps" class="box ps" style="left:800px;top:270px;width:520px;height:350px"><i class="ic big" data-icon="blades"></i><b>PowerScale</b><small>OneFS · storage nodes</small></div>
+
+<!-- ── 2 · inside PowerScale ─────────────────────────────────────────── -->
+<div data-k="recv" class="step-box" style="left:820px;top:396px;width:102px;height:64px">Receive</div>
+<i data-k="s1" class="wire thin pkt" data-arrow="923 428 945 428"></i>
+<div data-k="proc" class="step-box" style="left:946px;top:396px;width:102px;height:64px">Process</div>
+<i data-k="s2" class="wire thin pkt" data-arrow="1049 428 1071 428"></i>
+<div data-k="serve" class="step-box" style="left:1072px;top:396px;width:102px;height:64px">Serve</div>
+<i data-k="s3" class="wire thin pkt" data-arrow="1175 428 1197 428"></i>
+<div data-k="resp" class="step-box" style="left:1198px;top:396px;width:102px;height:64px">Respond</div>
+<div data-k="boundary" class="callout small" style="left:820px;top:490px;width:480px;height:52px">Storage latency covers this box only</div>
+
+<!-- ── 3 · statistics already exist ───────────────────────────────────── -->
+<div data-k="c-act" class="chip counter" style="left:820px;top:500px;width:150px;height:84px"><b>Activity</b></div>
+<div data-k="c-lat" class="chip counter" style="left:985px;top:500px;width:150px;height:84px"><b>Latency</b></div>
+<div data-k="c-who" class="chip counter" style="left:1150px;top:500px;width:150px;height:84px"><b>Who / where</b></div>
+<div data-k="math" class="card math" style="left:1380px;top:430px;width:460px;height:150px"><b>10 operations · 120 ms total</b><em>→ 12 ms average</em><span class="tag">illustration</span></div>
+<div data-k="avg" class="callout" style="left:1380px;top:592px;width:460px;height:58px">An average is not the slowest request</div>
+
+<!-- ── 4 · the collector, beside the path: a poll out to the management API, and back ── -->
+<div data-k="collector" class="box row collector" style="left:560px;top:700px;width:240px;height:120px"><i class="ic" data-icon="probe"></i><span><b>Collector</b><small>on a schedule</small></span></div>
+<i data-k="api" class="wire api pkt" data-arrow="790 702 892 624 14"></i>
+<i data-k="apiback" class="wire api back pkt" data-arrow="922 628 820 712 14"></i>
+<div data-k="api" class="lbl api-lbl" style="left:944px;top:652px;width:220px;height:30px">management API</div>
+<div data-k="nobytes" class="callout" style="left:820px;top:736px;width:440px;height:58px">File bytes never pass through it</div>
+
+<!-- ── 5 · collection → InfluxDB ───────────────────────────────────────── -->
+<div data-k="influx" class="box row influx" style="left:40px;top:700px;width:270px;height:120px"><i class="ic" data-icon="tsdb"></i><span><b>InfluxDB</b><small>saved rows</small></span></div>
+<i data-k="store" class="wire store pkt row-pkt" data-arrow="558 768 312 768"></i>
+<div data-k="sched" class="chip sched" style="left:560px;top:836px;width:350px;height:84px"><span>clients · every 5 s</span><span>full pass · every 5 min</span></div>
+<div data-k="notrace" class="callout" style="left:930px;top:850px;width:460px;height:58px">A poll is not a trace of one request</div>
+<div data-k="rowcard" class="chip rowcard" style="left:40px;top:836px;width:440px;height:84px"><span>1 row = a group of operations</span><span>top-N clients only</span></div>
+<div data-k="units" class="chip units" style="left:40px;top:642px;width:460px;height:46px">latency in µs · 1,000 µs = 1 ms</div>
+
+<!-- ── 7 · evidence (Footprint) ─────────────────────────────────────────── -->
+<div data-k="receipt" class="chip receipt" style="left:340px;top:712px;width:190px;height:42px"><i class="ic sm" data-icon="receipt"></i>receipt</div>
+<div data-k="ledger" class="chip ledger" style="left:40px;top:930px;width:190px;height:58px"><i class="ic sm" data-icon="receipt"></i>Footprint</div>
+<div data-k="t-find" class="chip trail" style="left:1080px;top:930px;width:220px;height:58px">finding</div>
+<i data-k="tr3" class="wire thin pkt" data-arrow="1078 959 1022 959"></i>
+<div data-k="t-stat" class="chip trail" style="left:820px;top:930px;width:200px;height:58px">statistic</div>
+<i data-k="tr2" class="wire thin pkt" data-arrow="818 959 762 959"></i>
+<div data-k="t-rows" class="chip trail" style="left:560px;top:930px;width:200px;height:58px">saved rows</div>
+<i data-k="tr1" class="wire thin pkt" data-arrow="558 959 502 959"></i>
+<div data-k="t-resp" class="chip trail" style="left:240px;top:930px;width:260px;height:58px">captured response</div>
+
+<!-- ── 8 · investigation ─────────────────────────────────────────────────── -->
+<div data-k="q" class="card question" style="left:1366px;top:280px;width:514px;height:84px">“The scan is slow. What do we know?”</div>
+<div data-k="a-known" class="answer known" style="left:1366px;top:384px;width:514px;height:64px"><b>Known</b><span>read latency 12 ms</span><span class="tag">illustration</span></div>
+<div data-k="a-unsure" class="answer unsure" style="left:1366px;top:460px;width:514px;height:64px"><b>Not sure</b>which VM sent it</div>
+<div data-k="a-why" class="answer why" style="left:1366px;top:536px;width:514px;height:64px"><b>Why</b>VM mapping missing</div>
+<i data-k="link" class="wire link pkt" data-arrow="1380 450 1250 926 -30"></i>
+
+<!-- ── 9 · build status ──────────────────────────────────────────────────── -->
+<div data-k="st-built" class="card status built" style="left:1366px;top:640px;width:514px;height:168px"><b>Built</b><span>✓ Node writers, inactive</span><span>✓ Evidence trail</span><span>✓ Compression</span></div>
+<div data-k="st-pend" class="card status pending" style="left:1366px;top:820px;width:514px;height:168px"><b>Pending</b><span>○ Operator settings confirmed</span><span>○ Retention</span><span>○ Throughput fix</span></div>
