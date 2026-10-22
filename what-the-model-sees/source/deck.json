@@ -1,0 +1,12 @@
+{
+  "title": "What the model actually sees",
+  "description": "How tools, skills and labelled data reach an AI model, one request at a time. Verbatim lines from agentfootprint 10.10.0; examples are illustrations.",
+  "footer": "What the model actually sees · agentfootprint 10.10.0 · examples are illustrations",
+  "area": [
+    0,
+    220,
+    1920,
+    1000
+  ],
+  "post": "post.json"
+}

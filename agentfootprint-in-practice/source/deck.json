@@ -1,0 +1,12 @@
+{
+  "title": "From two tools to an honest answer",
+  "description": "Building an agent one problem at a time, shown on a real chat app built on agentfootprint. Illustrative examples; measured numbers name their conditions.",
+  "footer": "From two tools to an honest answer · agentfootprint · examples are illustrations",
+  "area": [
+    0,
+    220,
+    1920,
+    1000
+  ],
+  "post": "post.json"
+}

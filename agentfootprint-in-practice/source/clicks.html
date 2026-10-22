@@ -1,0 +1,130 @@
+<!--
+  From two tools to an honest answer, click by click. Read by StoryDeck (storydeck build).
+  One board (board.html) is the whole app on every slide: each level's problem shows up in the slot its fix fills,
+  and the fix stays; the chat window shows the answer change. Each part wears its own world (data-theme, theme.css).
+  Then the boundary: what agentfootprint provides (green) and what the app brings (purple); then what is next.
+-->
+
+<section data-label="Title" data-kicker="agentfootprint, in practice" data-theme="sketch">
+  <div class="cover">
+    <h1>From two tools to an honest answer</h1>
+    <p class="sub">Building an AI assistant, one problem at a time</p>
+    <p class="sub2">on a real storage-operations chat app, built on agentfootprint · example answers are illustrations</p>
+    <p class="sub3">the six fixes, in order</p>
+    <div class="earned"><span class="w-menu"><i class="ic" data-icon="book"></i>Skills</span><span class="w-atlas"><i class="ic" data-icon="map"></i>Map</span><span class="w-terminal"><i class="ic" data-icon="code"></i>Code</span><span class="w-ticket"><i class="ic" data-icon="tag"></i>References</span><span class="w-recorder"><i class="ic" data-icon="notebook"></i>Run log</span><span class="w-ledger"><i class="ic" data-icon="ledger"></i>Ledger</span></div>
+  </div>
+  <aside class="notes">Six problems an agent meets as it grows, and the six fixes, shown on one real app. Every count and measured number comes from the library's and the app's own code and checked-in benches, with conditions in the notes; examples are labelled illustration.</aside>
+</section>
+
+<section data-label="0 · The start" data-kicker="The start" data-map="board" data-theme="sketch">
+  <step data-in="chat model gh1 gh2 gh3 gh4 gh5 gh6 q0_1 n0a" data-on="n0a chat q0_1 model" data-quiet>
+    <h2>The start: an AI model that reads and writes text</h2>
+    <aside class="notes">This is how an agent grows, one problem at a time, shown on a real one: a storage-operations chat app built on the agentfootprint library, which we call "the app". First, three words. The model is a large language model: it reads text and writes text. Everything it reads before it answers is the prompt, and every word in it costs time and money. And it has never seen your data. The whole app stays on this board the entire time: the model in the middle, and dashed boxes for what comes later. Each part also has its own look; only the paper changes, never the board.</aside>
+  </step>
+  <step data-in="t0 data n0t" data-out="n0a" data-on="n0t t0 data">
+    <h2>Tools: how the model reaches real data</h2>
+    <aside class="notes">To reach real data, the app gives the model tools. A tool is a small program with a name and a description; the model asks for it by name, the app runs it and puts the result into the prompt. This app starts with two: an inventory tool and a latency tool.</aside>
+  </step>
+  <step data-in="wq wc wd wr wa a0_2 n0b" data-out="n0t" data-on="n0b q0_1 wq model wc t0 wd data wr wa a0_2" data-focus="path" data-focus-route="q0_1 wq model wc t0 wd data wr wa a0_2">
+    <h2>It works: one question, one tool, one answer</h2>
+    <aside class="notes">With two tools, the model picks the right one: it calls the latency tool, the tool reads the data, and the answer comes back. The answer here is an illustration. This is where most demos stop. The dashed boxes are what the app needed next, as it grew.</aside>
+  </step>
+</section>
+<section data-label="1 · Skills" data-kicker="Level 1 of 6 · Skills" data-map="board" data-theme="menu">
+  <step data-in="x1_2 wall bad1 mq p1" data-out="gh1 a0_2 n0b" data-on="p1 wall mq q0_1 wq model wc bad1 wr wa x1_2" data-focus="path" data-focus-route="q0_1 wq model wc bad1 wr wa x1_2">
+    <h2>Level 1: ninety-two tools, and the wrong one picked</h2>
+    <aside class="notes">The app grew to 92 tools over its data: fabric ports and zones, arrays, NAS clusters, backups, VMs, the network sensor, collection health. Offered all at once, every tool description rides in every prompt. Prompts get long, and the model has to pick one tool out of 92. Here it picks the event log instead of latency, and answers a different question: nothing happened, so it looks fine. The wrong pick is an illustration.</aside>
+  </step>
+  <step data-in="t1 sk wsk wst x1x_2 a1_3 good1 f1" data-out="t0 x1_2 wall bad1 mq p1" data-on="f1 q0_1 sk wsk model wst t1 wc good1 wd data wr wa a1_3" data-quiet data-hot="sk" data-focus="path" data-focus-route="sk wsk model wst t1 wc good1 wd data wr wa a1_3">
+    <h2>Fix: pick a skill first, then its few tools</h2>
+    <aside class="notes">Skills. The model first sees a menu: 25 skills, each a name and a one-line description, offered through one tool, read_skill. Reading a skill brings its steps into the prompt and makes its tools available on the next call: about 4 tools (between 1 and 17), never all 92. With the skill read, the model has the latency tool in front of it again, and the answer changes back to the right one. In the app the model chooses the skill; rules and a scorer can choose first, and a near-tie falls through to the model. On top, agentfootprint can narrow the tools further with a classifier: 57% fewer tool bytes over 8 questions with the same verdicts, on Sonnet 5 in one pass ("it pays on bytes, not on judgment"). The app keeps that option off by default.</aside>
+  </step>
+</section>
+<section data-label="2 · The map" data-kicker="Level 2 of 6 · The map" data-map="board" data-theme="atlas">
+  <step data-in="q2_1 g2_2 res2 mq p2" data-out="gh2 q0_1 x1x_2 a1_3 good1 f1" data-on="p2 q2_1 wq model wc t1 wd data wr res2 mq wa g2_2" data-focus="path" data-focus-route="q2_1 wq model wc t1 wd data wr res2 wa g2_2">
+    <h2>Level 2: it doesn’t know where facts live</h2>
+    <aside class="notes">A question needs a link that one tool result does not hold. The VM inventory knows the VM, its host and its datastore, but not the array behind them. With nothing that says where that fact would be found, the model guesses instead of looking. Notice where the problem sits on the board: in the slot its fix will fill.</aside>
+  </step>
+  <step data-in="mp wmap g2x_2 a2_3 good2 f2" data-out="g2_2 res2 mq p2" data-on="f2 q2_1 mp wmap model wc good2 wd data wr wa a2_3" data-quiet data-hot="mp" data-focus="path" data-focus-route="mp wmap model wc good2 wd data wr wa a2_3">
+    <h2>Fix: a map of what exists, and where</h2>
+    <aside class="notes">The map. agentfootprint's defineOntology turns the app's map of its world into data: 46 terms, 47 relations and 20 sources, each saying which tool, in which skill, finds it. It rides at the end of every prompt. It is a map, not a tool: it never fetches anything. The guess is struck through, and the answer is looked up instead. It costs about 6.5 thousand tokens a call. We measured it honestly: on 8 "no data" questions with Sonnet 5, tool calls fell from 13 to 6, but almost all of that came from one question, so the benefit is mixed. What it reliably gives is a place to say where a missing fact would be found.</aside>
+  </step>
+</section>
+<section data-label="3 · Code" data-kicker="Level 3 of 6 · Code" data-map="board" data-theme="terminal">
+  <step data-in="q3_1 g3_2 tab wtr wdump math3 mx p3" data-out="gh3 gh4 q2_1 g2x_2 a2_3 good2 f2" data-on="p3 q3_1 wq model wc t1 wtr tab wdump math3 mx wa g3_2" data-focus="path" data-focus-route="q3_1 wq model wc t1 wtr tab wdump math3 wa g3_2">
+    <h2>Level 3: big tables, and math by eye goes wrong</h2>
+    <aside class="notes">Some answers are tables: every VM disk, every port, thousands of rows. They pour into the prompt, and the model is asked for totals and percentages. The app's own words: a model adding up a wide table by eye gets it wrong. The numbers come out plausible and wrong. The numbers here are an illustration.</aside>
+  </step>
+  <step data-in="cd wtc chk g3x_2 a3_3 f3" data-out="g3_2 math3 mx p3" data-on="f3 q3_1 model wc t1 wtc cd chk wr wa a3_3" data-quiet data-hot="cd" data-focus="path" data-focus-route="model wc t1 wtc cd chk wr wa a3_3">
+    <h2>Fix: let code do the math</h2>
+    <aside class="notes">A code tool. The model writes a short script; agentfootprint's code runner runs it in a separate process. In the app it runs with no inherited secrets, for at most 30 seconds, and returns up to 8,000 characters. The model never adds the numbers itself, and the answer changes from a guess by eye to a computed number. The app is careful to call this process isolation, not a sandbox. And where the numbers matter most, the app goes one step further: the model only picks one of three named calculations, and the app computes it from the table and checks the result; the model supplies no rows, formula or code. The picker passed 29 of 29 wordings on Haiku 4.5. A free-form script once invented two datastores and a percentage it never computed, which is why the checked calculation comes first and free code is the fallback. The table, though, is still in the prompt: that is the next level.</aside>
+  </step>
+</section>
+<section data-label="4 · References" data-kicker="Level 4 of 6 · References" data-map="board" data-theme="ticket">
+  <step data-in="a3_2 q4_3 p4_4 mx p4" data-out="g3x_2 a3_3 f3" data-on="p4 q4_3 wq model wc t1 wtr tab wdump mx p4_4" data-quiet data-focus="path" data-focus-route="q4_3 wq model wc t1 wtr tab wdump p4_4">
+    <h2>Level 4: the whole table is sent, again and again</h2>
+    <aside class="notes">The script fixed the math, but the table still passes through the prompt: thousands of rows fill the context, and every following question carries them again, so every call costs more and the model skims. The table here is an illustration.</aside>
+  </step>
+  <step data-in="rf wtk wcr out4 a4_4 f4" data-out="p4_4 tab wdump mx p4" data-on="f4 q4_3 wc t1 wtr rf wtk model wcr cd out4 wr wa a4_4" data-hot="rf" data-focus="path" data-focus-route="wc t1 wtr rf wtk model wcr cd out4 wr wa a4_4">
+    <h2>Fix: keep the table, send a short label</h2>
+    <aside class="notes">References. The table goes into agentfootprint's artifact store, and the model gets a ticket: the reference, the row count, the column names and where the data came from, capped in size and without a single cell value. The rows never reach the prompt. The code tool asks for the table by reference: the library stages it as a file before the script runs. The follow-up is answered without carrying the rows again. In the app, every table is withheld this way, at any size.</aside>
+  </step>
+</section>
+<section data-label="5 · The run log" data-kicker="Level 5 of 6 · The run log" data-map="board" data-theme="recorder">
+  <step data-in="e5_1 q5_2 g5_3 run5 mq p5" data-out="gh5 q3_1 a3_2 q4_3 a4_4 f4" data-on="p5 q5_2 wq model run5 mq wa g5_3" data-quiet data-focus="path" data-focus-route="q5_2 wq model wa g5_3">
+    <h2>Level 5: “Why node 3?”, and the details are gone</h2>
+    <aside class="notes">Users ask follow-ups about an earlier answer: why that node, what about the second one. The evidence was in the earlier run, which the prompt no longer holds, so the model answers from memory and guesses.</aside>
+  </step>
+  <step data-in="rl wrl wrb g5x_3 a5_4 f5" data-out="g5_3 run5 mq p5" data-on="f5 q5_2 wq model wrl rl wrb wa a5_4" data-quiet data-hot="rl" data-focus="path" data-focus-route="q5_2 wq model wrl rl wrb wa a5_4">
+    <h2>Fix: record every run, and let the model look back</h2>
+    <aside class="notes">The run log. agentfootprint records every run: which tools ran, what each returned and why each was called. A self-explain skill gives the model, for that one step, 15 trace tools bound to the previous run, so a follow-up is answered from the record, and the guess gives way to what run 1 actually saw. In the app the conversation lives on the server, with a small carry of earlier receipts, never raw rows.</aside>
+  </step>
+</section>
+<section data-label="6 · The ledger" data-kicker="Level 6 of 6 · The ledger" data-map="board" data-theme="ledger">
+  <step data-in="q0_1 a6 led6 p6" data-out="gh6 e5_1 q5_2 g5x_3 a5_4 f5" data-on="p6 q0_1 wq model wa a6 led6" data-focus="path" data-focus-route="q0_1 wq model wa a6">
+    <h2>Level 6: a guess reads exactly like a fact</h2>
+    <aside class="notes">The last problem is trust. In a long answer, a guess from step six reads exactly like a fact from step two. Here the first sentence was checked and the second was assumed, and nothing in the wording tells them apart. Illustration.</aside>
+  </step>
+  <step data-in="lg wlg wls a6x s6 f6" data-out="q0_1 a6 led6 p6" data-on="f6 model wlg lg wls s6" data-quiet data-hot="lg" data-focus="path" data-focus-route="model wlg lg wls s6">
+    <h2>Fix: note why each call was made, then mark the answer</h2>
+    <aside class="notes">The findings ledger. With agentfootprint's findings, every tool call carries a short reason: is it direct or exploratory, and what does it expect. Earlier results are marked fact, open, noise or ruled out. No extra model calls, and nothing is inferred. The flat answer is struck through; the new one says what is known, what is not sure and what to ask, worked out from those rows, never from the model's confidence. Measured honestly: on real models over ten runs, how often noise was cited barely moved, so the ledger's value is that you can see which is which, not that the model got better at it. The rows here are an illustration.</aside>
+  </step>
+  <step data-in="q0_1 w6" data-out="a6x f6" data-on="w6" data-quiet data-focus="keep">
+    <h2>The whole app: six problems, six fixes</h2>
+    <aside class="notes">Six levels, six fixes, and the board is full: skills, the map, code, references, the run log and the ledger, around the same model. None of these problems is special to this app; they are what an agent meets as it grows. Next: whose is each fix?</aside>
+  </step>
+</section>
+<section data-label="7 · The boundary" data-kicker="The boundary" data-map="board" data-theme="blueprint">
+  <step data-in="lb_m lb_sk lb_mp lb_cd lb_rf lb_rl lb_lg b1" data-out="w6" data-on="b1 lb_m lb_sk lb_mp lb_cd lb_rf lb_rl lb_lg" data-quiet>
+    <h2>Draw the line: the library provides the how</h2>
+    <aside class="notes">Draw the boundary. Everything in green is agentfootprint: the agent loop and tool calls, defineSkill with its read_skill menu and routing, defineOntology for the map, the artifact store and references, the code runner and the helpers for checked operations, recordings and the self-explain trace tools, and the findings ledger with the answer's standing. None of it knows anything about storage.</aside>
+  </step>
+  <step data-in="ap_c ap_t ap_d ap_sk ap_mp ap_ck b2" data-out="b1" data-on="b2 lb_m lb_sk lb_mp lb_cd lb_rf lb_rl lb_lg ap_c ap_t ap_d ap_sk ap_mp ap_ck chat q0_1 s6 t1 data sk mp chk" data-quiet>
+    <h2>The app brings the what: its skills and their tools</h2>
+    <aside class="notes">And everything in purple is the app: its 25 skills and their steps, its 92 tools over its own data, the map's data, its three checked operations, and its screen. It also decides which results are tables and keeps its sessions in its own database. The library is the how; the app is the what.</aside>
+  </step>
+</section>
+<section data-label="8 · What it is for" data-kicker="What agentfootprint is for" data-map="board" data-theme="finale">
+  <step data-in="e1" data-out="ap_c ap_t ap_d ap_sk ap_mp ap_ck b2" data-on="e1 lb_m lb_sk lb_mp lb_cd lb_rf lb_rl lb_lg">
+    <h2>That is what agentfootprint is for</h2>
+    <aside class="notes">That is what the library is for. An agent meets these problems as it grows; agentfootprint solves them once, so an app brings only what it knows: its skills, their tools, its map and its data. Every run can also be seen in the Lens, a companion package, agentfootprint-lens. agentfootprint is open source, version 10.10.0 on npm, MIT licensed.</aside>
+  </step>
+  <step data-in="e2" data-out="lb_m lb_sk lb_mp lb_cd lb_rf lb_rl lb_lg e1" data-on="e2">
+    <h2>What it does not claim</h2>
+    <aside class="notes">And what it does not claim. It does not make the model right. It records what was checked, what was guessed and what is missing, and the answer says so. Measured on real models, the picture is mixed: the checked-calculation picker passed 29 of 29 wordings on Haiku 4.5; the map cut tool calls from 13 to 6 over 8 questions on Sonnet 5, but almost all of that came from one question; and over ten runs the ledger did not make the model cite noise less often. Some fixes pay off directly; others are about seeing which is which.</aside>
+  </step>
+</section>
+<section data-label="9 · Next" data-kicker="Next" data-map="board" data-theme="dawn">
+  <step data-in="q9_1 t9_2 out9 race1 n9a" data-out="lg wlg wls q0_1 s6 e2" data-on="n9a q9_1 wq model wc t1 wtc cd out9 wr wa t9_2 race1" data-focus="path" data-focus-route="q9_1 wq model wc t1 wtc cd out9 wr wa t9_2">
+    <h2>Today: the math runs while the user waits</h2>
+    <aside class="notes">What comes next connects this deck to the PowerScale deck. Today, a question about an average or a total makes the model write a short program, the app run it over the raw samples, and check the result, all while the user waits: four steps at question time. The steps are counted here, not timed.</aside>
+  </step>
+  <step data-in="band wband pipe n9s" data-out="data sk wsk wst mp wmap n9a" data-on="n9s band wband pipe" data-hot="band">
+    <h2>Next: a stats builder sums the data as it arrives</h2>
+    <aside class="notes">The pipeline in the PowerScale deck already collects every five seconds. Its stats builder sums the samples as they arrive: every five minutes, sixty samples become one summary (count, mean, variance, minimum, maximum) with its coverage, and a sample that was not collected stays a named gap, never a zero. Each summary keeps its trail back to the samples and the raw rows, because footprintjs records the run as it goes. As of 21 October 2026 it is built and tested, and switched off. The numbers here are illustrations.</aside>
+  </step>
+  <step data-in="na_2 nb_3 race2 nxt n9b" data-out="t9_2 n9s" data-on="n9b q9_1 wq model wc nxt wd pipe wr wa na_2 nb_3 race2" data-focus="path" data-focus-route="q9_1 wq model wc nxt wd pipe wr wa na_2 nb_3">
+    <h2>Then an answer is one lookup away</h2>
+    <aside class="notes">So at question time the model has one step left: read the summary, through a new summaries tool. The answer carries what is known (the average over 58 of 60 samples) and what is not (two samples missing, each with its reason). Still to do: the scheduled job that runs the builder, the summaries tool, and switching it on. The code tool stays, for questions nobody summarized. The answers and numbers here are illustrations.</aside>
+  </step>
+</section>

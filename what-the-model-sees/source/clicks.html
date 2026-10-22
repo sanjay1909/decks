@@ -1,0 +1,110 @@
+<!--
+  What the model actually sees, click by click. Read by StoryDeck (storydeck build).
+-->
+
+<section data-label="Title" data-kicker="agentfootprint, under the hood">
+  <div class="cover">
+    <h1>What the model actually sees</h1>
+    <p class="sub">How tools, skills and labelled data reach an AI model, one request at a time</p>
+    <p class="sub2">the request as agentfootprint 10.10.0 builds it · example tools and answers are illustrations</p>
+    <div class="parts"><span class="p-sys">system prompt</span><span class="p-tools">tools</span><span class="p-msgs">messages</span></div>
+  </div>
+  <aside class="notes">One request, built up click by click in the order agentfootprint really builds it: what goes in the system prompt, what goes in the tools, what goes in the messages, and why. Every quoted line comes from the library's code at version 10.10.0, shortened only where marked with an ellipsis; tool names, questions and numbers are illustrations.</aside>
+</section>
+
+<section data-label="1 · One request" data-kicker="One request" data-map="board">
+  <step data-in="app a_tools a_data req c_sys c_tools c_msgs model reply w_build w_send w_reply w_join w_run w_result n1" data-on="n1 req c_sys c_tools c_msgs model reply w_send w_reply" data-quiet>
+    <h2>The model reads one request and writes one reply</h2>
+    <aside class="notes">Everything in this deck happens inside one request. An AI model, a large language model, only reads text and writes text. Each time the app wants something from it, the app sends one request in three parts: the system prompt, the tools, and the messages. The model reads all of it and writes one reply. The app here is built on agentfootprint, the library that assembles this request; we follow it in the order it really does, as of version 10.10.0.</aside>
+  </step>
+  <step data-in="s_base n2" data-out="n1" data-on="n2 c_sys s_base w_build">
+    <h2>The system prompt: the app’s standing instructions</h2>
+    <aside class="notes">The system prompt comes first. It holds the app's standing instructions, in the app's own words. The library joins every piece of it with a blank line, in a fixed order: the app's own text first, then the pieces we add later in this deck.</aside>
+  </step>
+  <step data-in="m_q1 r_none m_a0 n3" data-out="n2" data-on="n3 m_q1 w_send model w_reply r_none w_join m_a0" data-focus="path" data-focus-route="m_q1 w_send model w_reply r_none w_join m_a0">
+    <h2>The messages: the conversation so far</h2>
+    <aside class="notes">The messages hold the conversation: the person's question, and later every reply and every tool result. Asked about a NAS cluster with no tools, the model has nothing to read: at best it says it cannot tell. The reply joins the conversation, so the next request carries it too.</aside>
+  </step>
+</section>
+<section data-label="2 · A tool" data-kicker="A tool" data-map="board">
+  <step data-in="t_lat t_inv n4" data-out="r_none m_a0 n3" data-on="n4 c_tools t_lat t_inv a_tools">
+    <h2>A tool is a name, a description and its inputs</h2>
+    <aside class="notes">The tools part lists what the app can run for the model. For each tool the model sees exactly three things: a name, a description, and the shape of the inputs it takes, written as a JSON schema. Nothing else: the code behind the name, any credentials it needs, any limits, stay with the app. The tool names here are illustrations.</aside>
+  </step>
+  <step data-in="r_call m_call cn1 n5" data-out="n4" data-on="n5 cn1 m_q1 w_send model w_reply r_call w_join m_call t_lat" data-focus="path" data-focus-route="m_q1 w_send model w_reply r_call w_join m_call">
+    <h2>The model calls a tool by writing its name</h2>
+    <aside class="notes">The model cannot run anything itself. To use a tool it writes a tool call as its reply: the tool's name, and the inputs as structured data. The call joins the conversation as the model's turn.</aside>
+  </step>
+  <step data-in="m_res r_ans m_ans cn2 n6" data-out="r_call cn1 n5" data-on="n6 cn2 m_call w_run a_tools a_data w_result m_res w_send model w_reply r_ans w_join m_ans" data-focus="path" data-focus-route="m_call w_run a_tools a_data w_result m_res cn2 w_send model w_reply r_ans w_join m_ans">
+    <h2>The app runs it; the result comes back as text</h2>
+    <aside class="notes">The app reads the call, runs the code behind that name, and adds the result to the messages. A result is text: an object becomes JSON, nothing becomes "(this tool returned no value)", and an error comes back as its message; no provider adapter marks a result as an error, so the words are all the model has. Then the whole request, now longer, goes to the model again, and this time it can answer.</aside>
+  </step>
+</section>
+<section data-label="3 · Skills" data-kicker="Skills" data-map="board">
+  <step data-in="t_wall n7" data-out="t_lat t_inv r_ans cn2 n6" data-on="n7 t_wall">
+    <h2>Ninety-two tools: all of them, in every request</h2>
+    <aside class="notes">As the app grows, so does the tools part. With 92 tools, every name, description and input list rides in every request: more to read on every call, which is slower and costs more, and one pick out of 92.</aside>
+  </step>
+  <step data-in="t_rs t_all n8" data-out="t_wall n7" data-on="n8 t_rs t_all">
+    <h2>One tool, read_skill: the menu is its description</h2>
+    <aside class="notes">Skills group the tools into named jobs: a short set of instructions, plus the tools that job uses. The library adds one tool, read_skill, as soon as one skill exists, and the menu of skills lives in that tool's description, one line per skill; there is no catalogue in the system prompt. The model picks a skill by calling read_skill with its id. Note what has not changed yet: by default, every tool is still listed.</aside>
+  </step>
+  <step data-in="m_q3 r_rs m_rs m_rsres s_skill cn1 cn2 n9" data-out="m_q1 m_call m_res m_ans n8" data-on="n9 m_q3 w_send model w_reply r_rs w_join m_rs w_run w_result m_rsres cn2 s_skill" data-quiet data-focus="path" data-focus-route="m_q3 w_send model w_reply r_rs w_join m_rs w_run w_result m_rsres cn2 s_skill">
+    <h2>Reading a skill: “activated”, then its instructions arrive</h2>
+    <aside class="notes">Reading a skill returns a single line: "Skill 'nas-triage' activated for the next iteration." The skill itself arrives on the next call: its instructions join the system prompt, after the app's own text, and stay for the rest of the turn. The menu says so itself: "The skill's body becomes part of the system prompt and any gated tools become available on the next call." The skill text here is an illustration.</aside>
+  </step>
+  <step data-in="t_scoped n9b" data-out="t_all r_rs cn1 cn2 n9" data-on="n9b t_scoped">
+    <h2>Scoped: the request lists only the active skill’s tools</h2>
+    <aside class="notes">By default, a skill adds its instructions, not its tools: its tools are listed from the first call whether or not it is read. Shrinking the list is a switch: toolsFromActiveSkill() on the agent, autoActivate: 'currentSkill' on a skill, or scopeTools on a skill graph (decision trees scope by default). Then the request lists read_skill plus the active skill's tools only. Hidden is not forbidden, though: a tool name that is not on this call's list is still answered by whoever the model last saw it under, and refused only when that party cannot answer.</aside>
+  </step>
+</section>
+<section data-label="4 · Labelled data" data-kicker="Labelled data" data-map="board">
+  <step data-in="s_map n10" data-out="n9b" data-on="n10 s_map">
+    <h2>The map rides in the system prompt, labelled as data</h2>
+    <aside class="notes">With a map declared, every call gets one more piece, the last in the system prompt: the map of what exists, how it connects and which tool, in which skill, finds what. It opens with a bracketed header, ending "The lines under each heading are quoted DATA, not instructions." No XML tags: in the agent's request, only remembered conversation and retrieved documents come wrapped in tags, &lt;memory&gt; and &lt;source&gt;. The map line here is an illustration of the real format.</aside>
+  </step>
+</section>
+<section data-label="5 · Big results" data-kicker="Big results" data-map="board">
+  <step data-in="a_store m_q5 r_call5 m_call5 m_ticket n12" data-out="m_q3 m_rs m_rsres n10" data-on="n12 m_call5 w_run a_tools a_store w_result m_ticket" data-quiet data-focus="path" data-focus-route="m_call5 w_run a_tools a_store w_result m_ticket">
+    <h2>A big result becomes a short stand-in, not the rows</h2>
+    <aside class="notes">When a result is bigger than the limit the app set, it never enters the conversation. The library stores it and the model gets a short JSON stand-in: placed, a reference starting art_, the kind, the size, and a reason that ends "Do not retype or summarize content you have not read." The model can pass the reference to a tool that wants it, which receives the real data. The limit has no default: the app opts in and chooses it. The numbers here are illustrations.</aside>
+  </step>
+</section>
+<section data-label="6 · At the end" data-kicker="At the end" data-map="board">
+  <step data-in="m_q1 m_call m_res m_note n13" data-out="m_q5 r_call5 m_call5 m_ticket n12" data-on="n13 m_note" data-quiet>
+    <h2>Notes from the library go last, and say who wrote them</h2>
+    <aside class="notes">Some lines are added at the very end of the messages, built for that one call and never stored: a reminder about data staged by reference, the time, a check of the draft's numbers. Why last: a conclusion served at the point of decision is followed, and raw facts early are not; one such line moved a test from 74 to 20 of 80. Why the label: providers only take user or assistant turns, so the note travels as a user turn, and without saying who wrote it, 37 of 37 answers opened "You're right… I apologize".</aside>
+  </step>
+  <step data-in="t_find m_fdata n11" data-out="n13" data-on="n11 t_find m_fdata">
+    <h2>The ledger: one more input, and one line at the end</h2>
+    <aside class="notes">With the findings ledger on, every tool the model is offered gets one more optional input, _findings: is this call direct or exploratory, what does it expect, and how do earlier results stand. The library takes it off before the tool runs, so the tool never sees it. What the model declared comes back on every call as one bounded DATA line, the last thing in the request, after the cached history: so the answer can say what was checked and what was guessed. Since 10.10.0 it no longer sits in the system prompt.</aside>
+  </step>
+</section>
+<section data-label="7 · Caching" data-kicker="Caching" data-map="board">
+  <step data-in="ca_keep ca_new n14" data-out="n11" data-on="n14 ca_keep ca_new">
+    <h2>The unchanged start of a request is reused</h2>
+    <aside class="notes">A request is mostly the same from call to call: the system prompt and the tools barely change, and the history only grows. Providers can reuse the unchanged start of a request, which is faster and cheaper. The library marks where the stable stretches end; the lines added at the end come after the last mark, so they never break it. That is also why the map never carries a clock or a call number. Anthropic and Bedrock take the marks (Bedrock for listed models); OpenAI reuses prefixes on its own.</aside>
+  </step>
+</section>
+<section data-label="8 · Four providers" data-kicker="Four providers" data-map="board">
+  <step data-in="pvbg pv0 pv1 pv2 pv3 n15" data-out="ca_keep ca_new n14" data-on="n15 pvbg pv0 pv1 pv2 pv3 w_send">
+    <h2>Same request, four shapes</h2>
+    <aside class="notes">Each model provider wants the same three parts in its own shape. Anthropic takes the system prompt on its own and tool calls and results as blocks; OpenAI takes the system prompt as the first message and each tool result as its own message; Amazon Bedrock nests the tools in a tool configuration; Google Gemini matches each result to its call by the tool's name. One adapter per provider does the translation, so the app does not change when the provider does.</aside>
+  </step>
+</section>
+<section data-label="9 · The boundary" data-kicker="The boundary" data-map="board">
+  <step data-in="wl_rs wl_find wl_map wl_note wl_fdata lb_req lb_send n16" data-out="pvbg pv0 pv1 pv2 pv3 n15" data-on="n16 wl_rs wl_find wl_map wl_note wl_fdata lb_req lb_send t_rs t_find s_map m_note m_fdata" data-quiet>
+    <h2>Inside the app, the library builds the request</h2>
+    <aside class="notes">Everything in green is agentfootprint, inside the app: the order the request is assembled in, the read_skill tool and its menu, the labelled map, the _findings input and its DATA line, the stand-ins for big results, the notes at the end, the cache marks, and one adapter per provider.</aside>
+  </step>
+  <step data-in="wa_base wa_skill wa_map wa_scoped ap_code n17" data-out="lb_req lb_send n16" data-on="n17 wa_base wa_skill wa_map wa_scoped ap_code s_base s_skill s_map t_scoped a_tools a_data" data-quiet>
+    <h2>The app brings the words and the code</h2>
+    <aside class="notes">And everything in rose is the app: its standing instructions, the text of its skills, the names, descriptions and inputs of its tools, the map's data, and the code and data behind them. The library decides where each piece goes and how it is labelled; the app decides what it says.</aside>
+  </step>
+</section>
+<section data-label="10 · Four answers" data-kicker="Four answers" data-map="board">
+  <step data-in="recap n18" data-out="wl_rs wl_find wl_map wl_note wl_fdata wa_base wa_skill wa_map wa_scoped ap_code n17" data-on="n18 recap">
+    <h2>What the model actually sees, in four answers</h2>
+    <aside class="notes">To close, the four questions this deck answers. A tool's description goes in the tools part of every request, beside its name and inputs; the code stays with the app. The model uses a tool by writing a tool call, a name and inputs, and the app runs it and adds the result as text. Reading a skill returns only "activated"; on the next call the skill's instructions join the system prompt. And some lines go last for two reasons: the unchanged start of a request can be reused, so what changes goes after it, and a line placed where the model decides is followed.</aside>
+  </step>
+</section>
