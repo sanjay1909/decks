@@ -20,8 +20,8 @@ npx footprint-storydeck check .     # what to fix, click by click
 cp index.html ../index.html
 ```
 
-Part looks (`data-theme`) need StoryDeck 0.8.0 or later. Until that is on npm, build with StoryDeck's main branch;
-0.7.0 builds the same clicks without the part looks.
+Part looks (`data-theme`) need StoryDeck 0.8.0 or later (`npx footprint-storydeck@0.8.0 build .` gives the published
+page byte for byte); 0.7.0 builds the same clicks without the part looks.
 
 ## Files
 
